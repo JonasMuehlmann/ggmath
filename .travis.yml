@@ -27,7 +27,7 @@ jobs:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-focal
           packages:
-            - clang-11
+            - clang++-11
             - cmake
             - libgtest-dev
       env:
