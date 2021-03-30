@@ -44,6 +44,8 @@ jobs:
       script:
         - 'nvm install lts/*'
         - npm install @semantic-release/exec
+        - npm install @semantic-release/changelog
+        - npm install @semantic-release/git
         - npx semantic-release
 
 script:
