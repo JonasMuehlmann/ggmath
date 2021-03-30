@@ -15,17 +15,20 @@ jobs:
           packages:
             - g++-10
             - cmake
-      env: COMPILER=g++-10
+      env:
+        - MATRIX_EVAL="CC=gcc-10.0 && CXX=g++-10.0"
 
     - compiler: clang
       addons:
         apt:
           sources:
+            - ubuntu-toolchain-r-test
             - llvm-toolchain-precise
           packages:
             - clang-10
             - cmake
-      env: COMPILER=clang-10
+      env:
+        - MATRIX_EVAL="CC=clang-10.0 && CXX=clang++-10.0"
 
     - stage: deploy
       compiler: gcc
@@ -37,7 +40,6 @@ jobs:
         - echo $TRAVIS_BRANCH
         - semantic-release -v Warning publish
 script:
-  - gcc -v && g++ -v && cmake --version
   - mkdir build
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=Release ..
