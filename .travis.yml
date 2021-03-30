@@ -15,6 +15,7 @@ jobs:
             - g++-10
             - cmake
             - libgtest-dev
+            - libpthread-stubs0-dev
     # - before_script:
         # - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 60 --slave /usr/bin/g++ g++ /usr/bin/g++-10
       env:
@@ -31,6 +32,7 @@ jobs:
             - clang-10
             - cmake
             - libgtest-dev
+            - libpthread-stubs0-dev
         # - before_script:
         # - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-10 60 --slave /usr/bin/g++ g++ /usr/bin/clang++-10
       env:
