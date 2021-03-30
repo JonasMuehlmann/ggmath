@@ -3,7 +3,6 @@ dist: focal
 os:
   - linux
 language: cpp
-cache: ccache
 
 jobs:
   include:
@@ -16,7 +15,7 @@ jobs:
             - g++-10
             - cmake
       env:
-        - MATRIX_EVAL="CC=gcc-10.0 && CXX=g++-10.0"
+        - MATRIX_EVAL="CC=gcc-10 && CXX=g++-10"
 
     - compiler: clang
       addons:
@@ -28,7 +27,7 @@ jobs:
             - clang-10
             - cmake
       env:
-        - MATRIX_EVAL="CC=clang-10.0 && CXX=clang++-10.0"
+        - MATRIX_EVAL="CC=clang-10 && CXX=clang++-10"
 
     - stage: deploy
       compiler: gcc
