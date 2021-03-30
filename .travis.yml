@@ -30,6 +30,7 @@ jobs:
             - clang++-11
             - cmake
             - libgtest-dev
+            - libstdc++-10-dev
       env:
         - COMPILER=clang++-11
         - CXX=clang++-11
