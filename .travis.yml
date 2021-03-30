@@ -10,7 +10,7 @@ cache:
 
 jobs:
   include:
-    - stage: release
+    - stage: deploy
       script:
         - 'nvm install lts/*'
         - npx semantic-release
