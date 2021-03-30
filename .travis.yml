@@ -25,15 +25,15 @@ jobs:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise
+            - llvm-toolchain-focal
           packages:
-            - clang-10
+            - clang-11
             - cmake
             - libgtest-dev
       env:
-        - COMPILER=clang++-10
-        - CXX=clang++-10
-        - CC=clang-10
+        - COMPILER=clang++-11
+        - CXX=clang++-11
+        - CC=clang-11
 
     - stage: deploy
       compiler: gcc
