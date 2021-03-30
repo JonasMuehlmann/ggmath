@@ -14,8 +14,9 @@ jobs:
           packages:
             - g++-10
             - cmake
-      env:
-        - MATRIX_EVAL="sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 60 --slave /usr/bin/g++ g++ /usr/bin/g++-10 && CC=gcc-10 && CXX=g++-10"
+    - before_script:
+        # - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 60 --slave /usr/bin/g++ g++ /usr/bin/g++-10
+        -CC=gcc-10 && CXX=g++-10
 
     - compiler: clang
       addons:
@@ -26,8 +27,9 @@ jobs:
           packages:
             - clang-10
             - cmake
-      env:
-        - MATRIX_EVAL="sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-10 60 --slave /usr/bin/g++ g++ /usr/bin/clang++-10 && CC=clang-10 && CXX=clang++-10"
+    - before_script:
+        # - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-10 60 --slave /usr/bin/g++ g++ /usr/bin/clang++-10
+        - CC=clang-10 && CXX=clang++-10
 
     - stage: deploy
       compiler: gcc
