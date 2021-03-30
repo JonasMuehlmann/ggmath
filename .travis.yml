@@ -39,5 +39,7 @@ jobs:
 script:
   - gcc -v && g++ -v && cmake --version
   - mkdir build
-  - cmake --build ./build --target ggmath_tests -DCMAKE_BUILD_TYPE=Release
-  - ./build/tests/ggmath_tests
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release ..
+  - cmake --build . --target ggmath_tests
+  - tests/ggmath_tests
