@@ -1,12 +1,9 @@
-dist: trusty
+dist: focal
 
 os:
   - linux
 language: cpp
 cache: ccache
-compiler:
-  - clang
-  - gcc
 
 jobs:
   include:
