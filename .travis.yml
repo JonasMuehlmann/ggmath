@@ -10,6 +10,11 @@ cache:
 
 jobs:
   include:
+    - stage: release
+      script:
+        - 'nvm install lts/*'
+        - npx semantic-release
+
     - compiler: gcc
       addons:
         apt:
@@ -39,14 +44,6 @@ jobs:
         - COMPILER=clang++-11
         - CXX=clang++-11
         - CC=clang-11
-
-    - stage: release
-      compiler:
-        - gcc
-        script:
-          - nvm install lts/*
-          - npx semantic-release
-
 
 script:
   - mkdir build
