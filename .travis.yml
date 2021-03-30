@@ -1,0 +1,45 @@
+dist: trusty
+
+os:
+  - linux
+language: cpp
+cache: ccache
+compiler:
+  - clang
+  - gcc
+
+jobs:
+  include:
+    - compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-10
+            - cmake
+      env: COMPILER=g++-10
+
+    - compiler: clang
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-precise
+          packages:
+            - clang-10
+            - cmake
+      env: COMPILER=clang-10
+
+    - stage: deploy
+      compiler: gcc
+      script:
+        - git config --global user.name "semantic-release (via TravisCI)"
+        - git config --global user.email "semantic-release@travis"
+        - pip install python-semantic-release
+        - echo $TRAVIS_PULL_REQUEST
+        - echo $TRAVIS_BRANCH
+        - semantic-release -v Warning publish
+script:
+  - gcc -v && g++ -v && cmake --version
+  - cmake --build ./cmake-build-debug --target ggmath_tests -DCMAKE_BUILD_TYPE=Release
+  - ./cmake-build-debug/tests/ggmath_tests
