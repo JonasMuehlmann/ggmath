@@ -7,4 +7,4 @@ set(TEST_FILES
         )
 add_executable(ggmath_tests test.cpp ${TEST_FILES})
 target_include_directories(ggmath_tests SYSTEM PUBLIC ${CMAKE_SOURCE_DIR}/src/)
-target_link_libraries(ggmath_tests PUBLIC gtest gtest_main ggmath)
+target_link_libraries(ggmath_tests PUBLIC pthread gtest gtest_main ggmath)
