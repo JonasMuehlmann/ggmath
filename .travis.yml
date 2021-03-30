@@ -3,6 +3,10 @@ dist: focal
 os:
   - linux
 language: cpp
+cache:
+  - ccache
+  - pip
+  - apt
 
 jobs:
   include:
@@ -36,15 +40,14 @@ jobs:
         - CXX=clang++-11
         - CC=clang-11
 
-    - stage: deploy
-      compiler: gcc
-      script:
-        - git config --global user.name "semantic-release (via TravisCI)"
-        - git config --global user.email "semantic-release@travis"
-        - pip install python-semantic-release
-        - echo $TRAVIS_PULL_REQUEST
-        - echo $TRAVIS_BRANCH
-        - semantic-release -v Warning publish
+    - stage: release
+      compiler:
+        - gcc
+        script:
+          - nvm install lts/*
+          - npx semantic-release
+
+
 script:
   - mkdir build
   - cd build
