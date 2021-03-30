@@ -38,5 +38,6 @@ jobs:
         - semantic-release -v Warning publish
 script:
   - gcc -v && g++ -v && cmake --version
-  - cmake --build ./cmake-build-debug --target ggmath_tests -DCMAKE_BUILD_TYPE=Release
-  - ./cmake-build-debug/tests/ggmath_tests
+  - mkdir build
+  - cmake --build ./build --target ggmath_tests -DCMAKE_BUILD_TYPE=Release
+  - ./build/tests/ggmath_tests
