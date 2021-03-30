@@ -10,7 +10,6 @@ cache:
 
 jobs:
   include:
-    - stage: test
     - compiler: gcc
       addons:
         apt:
@@ -45,6 +44,7 @@ jobs:
       script:
         - 'nvm install lts/*'
         - npx semantic-release
+
 script:
   - mkdir build
   - cd build
