@@ -11,7 +11,11 @@ Checks: '*,
 -llvmlibc-implementation-in-namespace,
 -readability-avoid-const-params-in-decls,
 -cppcoreguidelines-pro-type-union-access,
--misc-non-private-member-variables-in-classes'
+-misc-non-private-member-variables-in-classes,
+-llvm-qualified-auto,
+-readability-qualified-auto,
+-cppcoreguidelines-pro-bounds-constant-array-index'
+
 
 WarningsAsErrors: '*'
 HeaderFilterRegex: '.*'

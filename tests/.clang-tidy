@@ -4,4 +4,6 @@ Checks: "-cert-err58-cpp,
 -cppcoreguidelines-owning-memory,
 -cppcoreguidelines-special-member-functions,
 -hicpp-special-member-functions,
--fuchsia-statically-constructed-objects"
+-fuchsia-statically-constructed-objects,
+-cppcoreguidelines-avoid-magic-numbers,
+-readability-magic-numbers"
