@@ -146,12 +146,12 @@ namespace ggmath::vec
     }
     // endregion named constructors
     // region functions
-    template <typename T, int n>
-    constexpr vec<T, n> cross(const vec<T, n>& a, const vec<T, n>& b)
+    template <typename T>
+    constexpr vec<T, 3> cross(const vec<T, 3>& a, const vec<T, 3>& b)
     {
-        return vec(a[1] * b[2] - a[2] * b[1],
-                   a[2] * b[0] - a[0] * b[2],
-                   a[0] * b[1] - a[1] * b[0]);
+        return vec<T, 3>(a[1] * b[2] - a[2] * b[1],
+                         a[2] * b[0] - a[0] * b[2],
+                         a[0] * b[1] - a[1] * b[0]);
     }
     template <typename T, int n>
     constexpr float length(const vec<T, n>& vec)
@@ -424,7 +424,7 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr std::ostream& operator<<(std::ostream& os, const vec<T, n>& vec)
     {
-        auto last = std::end(vec.data) - 1;
+        const auto last = std::end(vec.data) - 1;
 
         os << '(';
         // Loop ends before last
