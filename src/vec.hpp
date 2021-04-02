@@ -7,6 +7,7 @@
 #include <numeric>
 #include <ostream>
 
+// region macros
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage,-warnings-as-errors)
 #define COMMON_MEMBERS(n)                                                                              \
     constexpr explicit vec()                                                                           \
@@ -44,7 +45,7 @@
         return data[i];                                                                                \
     }                                                                                                  \
     ~vec() = default;
-
+// endregion macros
 namespace ggmath::vec
 {
     // region classes
