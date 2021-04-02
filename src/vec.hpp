@@ -280,7 +280,7 @@ namespace ggmath::vec
     }
     // Cross product
     template <typename T, int n>
-    constexpr T operator%(const vec<T, n>& a, const vec<T, n>& b)
+    constexpr vec<T, n> operator%(const vec<T, n>& a, const vec<T, n>& b)
     {
         return cross(a, b);
     }
