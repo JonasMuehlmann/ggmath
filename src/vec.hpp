@@ -160,6 +160,11 @@ namespace ggmath::vec
         return std::sqrt(vec * vec);
     }
     template <typename T, int n>
+    constexpr float length_squared(const vec<T, n>& vec)
+    {
+        return vec * vec;
+    }
+    template <typename T, int n>
     constexpr vec<T, n> normalized(const vec<T, n>& vec)
     {
         return vec / length(vec);
