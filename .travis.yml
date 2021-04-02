@@ -42,7 +42,6 @@ jobs:
 
     - stage: deploy
       script:
-        - 'nvm install lts/*'
         - npm install @semantic-release/changelog
         - npx semantic-release
 
