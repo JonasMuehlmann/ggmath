@@ -273,7 +273,6 @@ namespace ggmath::vec
         return std::transform_reduce(std::begin(a.data),
                                      std::end(a.data),
                                      std::begin(b.data),
-                                     std::end(b.data),
                                      0.0,
                                      std::plus<T>(),
                                      std::multiplies<T>());
