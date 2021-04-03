@@ -4,13 +4,16 @@
 
 #include "vec.hpp"
 using namespace ggmath;
+
+
 // region functions
+
+
 TEST(Vec, LengthAny)
 {
-    vec::vec3f a      = vec::vec3f(2, 3, 4);
-    float      length = vec::length(a);
+    vec::vec3f a = vec::vec3f(2, 3, 4);
 
-    ASSERT_FLOAT_EQ(length, 5.3851647);
+    ASSERT_FLOAT_EQ(vec::length(a), 5.3851647);
 }
 TEST(Vec, LengthZero)
 {
@@ -136,7 +139,17 @@ TEST(Vec, DistanceFromOrigin)
     ASSERT_FLOAT_EQ(vec::distance(vec::vec3f(), a), vec::length(a));
 }
 // endregion functions
+
+
 // region operator overloads
+
+
+// region binary operators
+
+
+// region vector-vector
+
+
 TEST(Vec, CrossProductAny)
 {
     vec::vec3f a             = vec::vec3f(2, 3, 4);
@@ -195,7 +208,7 @@ TEST(Vec, DotProductUnitPerpendicular)
     ASSERT_EQ(dot_product, 0);
 }
 
-TEST(Vec, Add)
+TEST(Vec, Addition)
 {
     vec::vec3f a = vec::vec3f(1, 0, 0);
     vec::vec3f b = vec::vec3f(0, 1, 0);
@@ -203,7 +216,7 @@ TEST(Vec, Add)
 
     ASSERT_EQ(c, vec::vec3f(1, 1, 0));
 }
-TEST(Vec, AddWithNegativeComponends)
+TEST(Vec, AdditionWithNegativeComponends)
 {
     vec::vec3f a = vec::vec3f(-1, 0, 0);
     vec::vec3f b = vec::vec3f(0, 1, 0);
@@ -211,4 +224,102 @@ TEST(Vec, AddWithNegativeComponends)
 
     ASSERT_EQ(c, vec::vec3f(-1, 1, 0));
 }
+TEST(Vec, Subtraction)
+{
+    vec::vec3f a = vec::vec3f(1, 1, 0);
+    vec::vec3f b = vec::vec3f(0, 1, 0);
+    vec::vec3f c = a - b;
+
+    ASSERT_EQ(c, vec::vec3f(1, 0, 0));
+}
+TEST(Vec, SubtractionWithNegativeComponends)
+{
+    vec::vec3f a = vec::vec3f(-1, -1, 0);
+    vec::vec3f b = vec::vec3f(0, 1, 0);
+    vec::vec3f c = a - b;
+
+    ASSERT_EQ(c, vec::vec3f(-1, -2, 0));
+}
+
+
+// endregion vector-vector
+
+
+// region scalar-vector
+
+
+// endregion scalar-vector
+
+
+// endregion binary operators
+
+
+// region assignment operators
+
+
+// region scalar-vector
+
+
+// endregion scalar-vector
+
+
+// region vector-vector
+
+
+TEST(Vec, AdditionAssignment)
+{
+    vec::vec3f a = vec::vec3f(1, 0, 0);
+    vec::vec3f b = vec::vec3f(0, 1, 0);
+    a += b;
+
+    ASSERT_EQ(a, vec::vec3f(1, 1, 0));
+}
+TEST(Vec, AdditionAssignmentWithNegativeComponends)
+{
+    vec::vec3f a = vec::vec3f(-1, 0, 0);
+    vec::vec3f b = vec::vec3f(0, 1, 0);
+
+    a += b;
+    ASSERT_EQ(a, vec::vec3f(-1, 1, 0));
+}
+TEST(Vec, SubtractionAssignment)
+{
+    vec::vec3f a = vec::vec3f(1, 1, 0);
+    vec::vec3f b = vec::vec3f(0, 1, 0);
+    a -= b;
+    ASSERT_EQ(a, vec::vec3f(1, 0, 0));
+}
+TEST(Vec, SubtractionAssignmentWithNegativeComponends)
+{
+    vec::vec3f a = vec::vec3f(-1, -1, 0);
+    vec::vec3f b = vec::vec3f(0, 1, 0);
+
+    a -= b;
+    ASSERT_EQ(a, vec::vec3f(-1, -2, 0));
+}
+
+// endregion vector-vector
+
+
+// endregion assignment operators
+
+
+// region comparison operators
+
+
+// region vector-vector
+
+
+// endregion vector-vector
+
+
+// region scalar-vector
+
+
+// endregion scalar-vector
+
+
+// endregion comparison operators
+
+
 // endregion operator overloads
