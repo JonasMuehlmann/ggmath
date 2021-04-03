@@ -15,24 +15,125 @@ TEST(Vec, LengthAny)
 TEST(Vec, LengthZero)
 {
     vec::vec3f zero_vector = vec::vec3f();
-    float      length      = vec::length(zero_vector);
 
-    ASSERT_EQ(length, 0);
+    ASSERT_EQ(vec::length(zero_vector), 0);
+}
+TEST(Vec, LengthNegative)
+{
+    vec::vec3f zero_vector = vec::vec3f(-2, -3, -4);
+
+    ASSERT_FLOAT_EQ(vec::length(zero_vector), 5.3851647);
 }
 
 TEST(Vec, LengthSquaredAny)
 {
-    vec::vec3f a      = vec::vec3f(2, 3, 4);
-    float      length = vec::length_squared(a);
+    vec::vec3f a = vec::vec3f(2, 3, 4);
 
-    ASSERT_EQ(length, 29);
+    ASSERT_EQ(vec::length_squared(a), 29);
 }
 TEST(Vec, LengthSquaredZero)
 {
     vec::vec3f zero_vector = vec::vec3f();
-    float      length      = vec::length_squared(zero_vector);
 
-    ASSERT_EQ(length, 0);
+    ASSERT_EQ(vec::length_squared(zero_vector), 0);
+}
+TEST(Vec, LengthSquaredNegative)
+{
+    vec::vec3f a = vec::vec3f(-2, -3, -4);
+
+    ASSERT_EQ(vec::length_squared(a), 29);
+}
+
+
+TEST(Vec, NormalizedAny)
+{
+    vec::vec3f a          = vec::vec3f(2, 3, 4);
+    vec::vec3f normalized = vec::normalized(a);
+
+    ASSERT_FLOAT_EQ(length(normalized), 1);
+}
+TEST(Vec, NormalizedZero)
+{
+    vec::vec3f a          = vec::vec3f(0, 0, 0);
+    vec::vec3f normalized = vec::normalized(a);
+
+    ASSERT_EQ(isnanf(length(normalized)), true);
+}
+TEST(Vec, NormalizedNegative)
+{
+    vec::vec3f a          = vec::vec3f(-2, -3, -4);
+    vec::vec3f normalized = vec::normalized(a);
+
+    ASSERT_FLOAT_EQ(length(normalized), 1);
+}
+TEST(Vec, ScaledByAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::scaled_by(a, 2);
+
+    ASSERT_FLOAT_EQ(vec::length(b), 10.770329);
+}
+TEST(Vec, ScaledByZeroFactor)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::scaled_by(a, 0);
+
+    ASSERT_FLOAT_EQ(vec::length(b), 0);
+}
+TEST(Vec, ScaledByZeroVector)
+{
+    vec::vec3f a = vec::vec3f(0, 0, 0);
+    vec::vec3f b = vec::scaled_by(a, 2);
+
+    ASSERT_FLOAT_EQ(vec::length(b), 0);
+}
+TEST(Vec, ScaledToAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::scaled_to(a, 2);
+
+    ASSERT_FLOAT_EQ(vec::length(b), 2);
+}
+TEST(Vec, ScaledToZeroScalar)
+{
+    vec::vec3f a = vec::vec3f();
+    vec::vec3f b = vec::scaled_to(a, 0);
+
+    ASSERT_FLOAT_EQ(vec::length(b), 0);
+}
+TEST(Vec, ScaledToZeroVector)
+{
+    vec::vec3f a = vec::vec3f();
+    vec::vec3f b = vec::scaled_to(a, 2);
+
+    ASSERT_FLOAT_EQ(vec::length(b), 0);
+}
+
+TEST(Vec, DistanceAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(5, 6, 7);
+
+    ASSERT_FLOAT_EQ(vec::distance(a, b), 5.196152);
+}
+TEST(Vec, DistanceCompareWithReversed)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(5, 6, 7);
+
+    ASSERT_FLOAT_EQ(vec::distance(b, a), vec::distance(a, b));
+}
+TEST(Vec, DistanceSelf)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_FLOAT_EQ(vec::distance(a, a), 0);
+}
+TEST(Vec, DistanceFromOrigin)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_FLOAT_EQ(vec::distance(vec::vec3f(), a), vec::length(a));
 }
 // endregion functions
 // region operator overloads
