@@ -7,7 +7,10 @@
 #include <numeric>
 #include <ostream>
 
+
 // region macros
+
+
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage,-warnings-as-errors)
 #define COMMON_MEMBERS(n)                                                                              \
     constexpr explicit vec()                                                                           \
@@ -45,10 +48,16 @@
         return data[i];                                                                                \
     }                                                                                                  \
     ~vec() = default;
+
+
 // endregion macros
+
+
 namespace ggmath::vec
 {
     // region classes
+
+
     template <typename T, int n>
     struct vec
     {
@@ -68,10 +77,15 @@ namespace ggmath::vec
         };
         COMMON_MEMBERS(2)
 
+
         // region constructors
+
+
         constexpr explicit vec(T xy) : data{xy, xy} {}
         constexpr vec(T x, T y) : data{x, y} {}
         constexpr vec(const vec<T, 2>& vec, T z) : data{vec.x, vec.y, z} {}
+
+
         // endregion constructors
     };
     template <typename T>
@@ -91,9 +105,15 @@ namespace ggmath::vec
             };
         };
         COMMON_MEMBERS(3)
+
+
         // region constructors
+
+
         constexpr explicit vec(T xyz) : data{xyz, xyz, xyz} {}
         constexpr vec(T x, T y, T z) : data{x, y, z} {}
+
+
         // endregion constructors
     };
     // TODO: Find out how to correctly handle fourth component
@@ -114,17 +134,29 @@ namespace ggmath::vec
             };
         };
         COMMON_MEMBERS(4);
+
+
         // region constructors
+
+
         constexpr explicit vec(T xyzw) : data{xyzw, xyzw, xyzw, xyzw} {}
         constexpr vec(T xyz, T w) : data{xyz, xyz, xyz, w} {}
         constexpr vec(T x, T y, T z, T w) : data{x, y, z, w} {}
         constexpr vec(const vec<T, 3>& other, T w) :
             data{other[0], other[1], other[2], w}
         {}
+
+
         // endregion constructors
     };
+
+
     // endregion classes
+
+
     // region named constructors
+
+
     template <typename T, int n>
     constexpr vec<T, n> unit_x() noexcept
     {
@@ -146,8 +178,14 @@ namespace ggmath::vec
         vector[2]  = 1;
         return vector;
     }
+
+
     // endregion named constructors
+
+
     // region functions
+
+
     template <typename T>
     constexpr vec<T, 3> cross(const vec<T, 3>& a, const vec<T, 3>& b)
     {
@@ -272,8 +310,13 @@ namespace ggmath::vec
     {
         return a - 2 * (a * normal) * normal;
     }
+
+
     // endregion functions
+
+
     // region operator overloads
+
 
     template <typename T, int n>
     // Invert vector
@@ -286,6 +329,14 @@ namespace ggmath::vec
                        std::negate<T>());
         return vector;
     }
+
+
+    // region binary operators
+
+
+    // region vector-vector
+
+
     // Dot product
     template <typename T, int n>
     constexpr T operator*(const vec<T, n>& a, const vec<T, n>& b)
@@ -316,7 +367,7 @@ namespace ggmath::vec
     }
     // Vector-vector subtraction
     template <typename T, int n>
-    constexpr vec<T, n> operator-(const vec<T, n>& a, const vec<T, n>& b)
+    constexpr vec<T, n> operator-(const vec<T, n>& a, vec<T, n> b)
     {
         std::transform(std::begin(a.data),
                        std::end(a.data),
@@ -325,6 +376,88 @@ namespace ggmath::vec
                        std::minus<T>());
         return b;
     }
+
+
+    // endregion vector-vector
+
+
+    // region scalar-vector
+
+
+    // Scalar-vector multiplication
+    template <typename T, int n>
+    constexpr vec<T, n> operator*(const float scalar, vec<T, n> vec)
+    {
+        std::transform(std::begin(vec.data),
+                       std::end(vec.data),
+                       std::begin(vec.data),
+                       [scalar](T element) { return element * scalar; });
+        return vec;
+    }
+    // Scalar-vector multiplication
+    template <typename T, int n>
+    constexpr vec<T, n> operator*(const vec<T, n>& vec, const float scalar)
+    {
+        return scalar * vec;
+    }
+    // Scalar-vector division
+    template <typename T, int n>
+    constexpr vec<T, n> operator/(const float scalar, vec<T, n> vec)
+    {
+        std::transform(std::begin(vec.data),
+                       std::end(vec.data),
+                       std::begin(vec.data),
+                       [scalar](T element) { return element / scalar; });
+        return vec;
+    }
+    // Scalar-vector division
+    template <typename T, int n>
+    constexpr vec<T, n> operator/(const vec<T, n>& vec, const float scalar)
+    {
+        return scalar / vec;
+    }
+
+
+    // endregion scalar-vector
+
+
+    // endregion binary operators
+
+
+    // region assignment operators
+
+
+    // region scalar-vector
+
+
+    // Scalar-vector multiplication assignment
+    template <typename T, int n>
+    constexpr vec<T, n>& operator*=(vec<T, n>& vec, const float scalar)
+    {
+        std::transform(std::begin(vec.data),
+                       std::end(vec.data),
+                       std::begin(vec.data),
+                       [scalar](T element) { return element * scalar; });
+        return vec;
+    }
+
+    // Scalar-vector division assignment
+    template <typename T, int n>
+    constexpr vec<T, n>& operator/=(vec<T, n>& vec, const float scalar)
+    {
+        std::transform(std::begin(vec.data),
+                       std::end(vec.data),
+                       std::begin(vec.data),
+                       [scalar](T element) { return element / scalar; });
+        return vec;
+    }
+
+
+    // endregion scalar-vector
+
+
+    // region vector-vector
+
 
     // Vector-vector addition-assignment
     template <typename T, int n>
@@ -348,6 +481,19 @@ namespace ggmath::vec
                        std::minus<T>());
         return a;
     }
+
+
+    // endregion vector-vector
+
+
+    // endregion assignment operators
+
+
+    // region comparison operators
+
+
+    // region vector-vector
+
 
     // Compare component-wise equality
     template <typename T, int n>
@@ -390,60 +536,19 @@ namespace ggmath::vec
         return length(a) <= length(b);
     }
 
-    // Scalar-vector multiplication
-    template <typename T, int n>
-    constexpr vec<T, n> operator*(const float scalar, vec<T, n> vec)
-    {
-        std::transform(std::begin(vec.data),
-                       std::end(vec.data),
-                       std::begin(vec.data),
-                       [scalar](T element) { return element * scalar; });
-        return vec;
-    }
-    // Scalar-vector multiplication
-    template <typename T, int n>
-    constexpr vec<T, n> operator*(const vec<T, n>& vec, const float scalar)
-    {
-        return scalar * vec;
-    }
-    // Scalar-vector division
-    template <typename T, int n>
-    constexpr vec<T, n> operator/(const float scalar, vec<T, n> vec)
-    {
-        std::transform(std::begin(vec.data),
-                       std::end(vec.data),
-                       std::begin(vec.data),
-                       [scalar](T element) { return element / scalar; });
-        return vec;
-    }
-    // Scalar-vector division
-    template <typename T, int n>
-    constexpr vec<T, n> operator/(const vec<T, n>& vec, const float scalar)
-    {
-        return scalar / vec;
-    }
 
-    // Scalar-vector multiplication assignment
-    template <typename T, int n>
-    constexpr vec<T, n>& operator*=(vec<T, n>& vec, const float scalar)
-    {
-        std::transform(std::begin(vec.data),
-                       std::end(vec.data),
-                       std::begin(vec.data),
-                       [scalar](T element) { return element * scalar; });
-        return vec;
-    }
+    // endregion vector-vector
 
-    // Scalar-vector division assignment
-    template <typename T, int n>
-    constexpr vec<T, n>& operator/=(vec<T, n>& vec, const float scalar)
-    {
-        std::transform(std::begin(vec.data),
-                       std::end(vec.data),
-                       std::begin(vec.data),
-                       [scalar](T element) { return element / scalar; });
-        return vec;
-    }
+
+    // region scalar-vector
+
+
+    // TODO: Add scalar-vector comparison for length
+    // endregion scalar-vector
+
+
+    // endregion comparison operators
+
 
     // Format: (data[0],data[2],...,data[n])
     template <typename T, int n>
@@ -460,7 +565,11 @@ namespace ggmath::vec
 
         return os;
     }
+
+
     // endregion operator overloads
+
+
     using vec2f  = vec<float, 2>;
     using vec3f  = vec<float, 3>;
     using vec4f  = vec<float, 4>;
