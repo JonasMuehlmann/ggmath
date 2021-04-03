@@ -158,11 +158,19 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr float length(const vec<T, n>& vec)
     {
-        return std::sqrt(vec * vec);
+        if (vec == ggmath::vec::vec<T, 3>())
+        {
+            return 0;
+        }
+        return abs(std::sqrt(vec * vec));
     }
     template <typename T, int n>
     constexpr float length_squared(const vec<T, n>& vec)
     {
+        if (vec == ggmath::vec::vec<T, 3>())
+        {
+            return 0;
+        }
         return vec * vec;
     }
     template <typename T, int n>
