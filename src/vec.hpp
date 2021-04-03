@@ -186,7 +186,13 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n> scaled_to(const vec<T, n>& vec, float wanted_magnitude)
     {
-        return scaled_by(vec, wanted_magnitude / length(vec));
+        float factor = wanted_magnitude / length(vec);
+
+        if (!std::isnormal(factor))
+        {
+            return ggmath::vec::vec<T, n>();
+        }
+        return scaled_by(vec, factor);
     }
     template <typename T, int n>
     constexpr float distance(const vec<T, n>& a, const vec<T, n>& b)
