@@ -250,7 +250,7 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr bool perpendicular(const vec<T, n>& a, const vec<T, n>& b)
     {
-        return a * b == 0;
+        return std::abs(a * b) <= std::numeric_limits<float>::epsilon();
     }
     template <typename T, int n>
     constexpr float angle_between(const vec<T, n>& a, const vec<T, n>& b)
