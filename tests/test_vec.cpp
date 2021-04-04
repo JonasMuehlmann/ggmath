@@ -549,6 +549,7 @@ TEST(Vec, DivisionZeroVector)
 
 // region scalar-vector
 
+
 TEST(Vec, MultiplicationAssignmentAny)
 {
     vec::vec3f a = vec::vec3f(2, 3, 4);
@@ -593,6 +594,7 @@ TEST(Vec, DivisionAssignmentZeroVector)
 
     ASSERT_EQ(zero_vector, vec::vec3f());
 }
+
 
 // endregion scalar-vector
 
@@ -644,6 +646,112 @@ TEST(Vec, SubtractionAssignmentWithNegativeComponends)
 // region vector-vector
 
 
+TEST(Vec, EqualAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a == a, true);
+}
+TEST(Vec, EqualAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(a == b, false);
+}
+
+
+TEST(Vec, UnequalAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(a != b, true);
+}
+TEST(Vec, UnequalAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a != a, false);
+}
+
+
+TEST(Vec, LongerAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(a > b, true);
+}
+TEST(Vec, LongerAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(b > a, false);
+}
+
+
+TEST(Vec, ShorterAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(b < a, true);
+}
+TEST(Vec, ShorterAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(a < b, false);
+}
+
+
+TEST(Vec, LongerOrEqualAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(a >= b, true);
+}
+TEST(Vec, LongerOrEqualAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(b >= a, false);
+}
+TEST(Vec, LongerOrEqualAnyEqual)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a >= b, true);
+}
+
+
+TEST(Vec, ShorterOrEqualAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(b <= a, true);
+}
+TEST(Vec, ShorterOrEqualAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(a <= b, false);
+}
+TEST(Vec, ShorterOrEqualAnyEqual)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(b <= a, true);
+}
 // endregion vector-vector
 
 
