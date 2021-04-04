@@ -255,21 +255,7 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr float angle_between(const vec<T, n>& a, const vec<T, n>& b)
     {
-        return std::acos((a * b) / (std::abs((length(a))) * std::abs(length(b))));
-    }
-    template <typename T, int n>
-    constexpr bool collinear(const vec<T, n>& a, vec<T, n> b)
-    {
-        return std::transform_reduce(
-            std::begin(a.data),
-            std::end(a.data),
-            std::begin(b.data),
-            std::end(b.data),
-            true,
-            std::divides<T>(),
-            [a, &b](const auto& is_equal, const auto& element) {
-                return is_equal && (element == a.data[0] / b.data[0]);
-            });
+        return std::acos((a * b) / (std::abs(length(a)) * std::abs(length(b))));
     }
     template <typename T, int n>
     constexpr bool is_unit_vector(const vec<T, n>& vec)
