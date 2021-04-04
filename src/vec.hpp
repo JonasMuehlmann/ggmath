@@ -339,14 +339,10 @@ namespace ggmath::vec
 
     // Dot product
     template <typename T, int n>
-    constexpr T operator*(const vec<T, n>& a, const vec<T, n>& b)
+    constexpr float operator*(const vec<T, n>& a, const vec<T, n>& b)
     {
-        return std::transform_reduce(std::begin(a.data),
-                                     std::end(a.data),
-                                     std::begin(b.data),
-                                     0.0,
-                                     std::plus<T>(),
-                                     std::multiplies<T>());
+        return std::inner_product(
+            std::begin(a.data), std::end(a.data), std::begin(b.data), 0.0);
     }
     // Cross product
     template <typename T, int n>
