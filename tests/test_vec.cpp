@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 
-#include <iostream>
-
 #include "vec.hpp"
 using namespace ggmath;
 
@@ -137,6 +135,81 @@ TEST(Vec, DistanceFromOrigin)
     vec::vec3f a = vec::vec3f(2, 3, 4);
 
     ASSERT_FLOAT_EQ(vec::distance(vec::vec3f(), a), vec::length(a));
+}
+
+TEST(Vec, ParallelAny)
+{
+    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f b           = vec::normalized(vec::vec3f(2, 3, 4));
+    bool       is_parallel = vec::parallel(a, b);
+
+    ASSERT_EQ(is_parallel, true);
+}
+TEST(Vec, ParallelAnyNot)
+{
+    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f b           = vec::normalized(vec::vec3f(5, 6, 7));
+    bool       is_parallel = vec::parallel(a, b);
+
+    ASSERT_EQ(is_parallel, false);
+}
+TEST(Vec, ParallelZero)
+{
+    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f zero_vector = vec::vec3f();
+    bool       is_parallel = vec::anti_parallel(a, zero_vector);
+
+    ASSERT_EQ(is_parallel, false);
+}
+
+TEST(Vec, AntiParallelAny)
+{
+    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f b           = vec::normalized(vec::vec3f(-2, -3, -4));
+    bool       is_parallel = vec::anti_parallel(a, b);
+
+    ASSERT_EQ(is_parallel, true);
+}
+TEST(Vec, AntiParallelAnyNot)
+{
+    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f b           = vec::normalized(vec::vec3f(5, 6, 7));
+    bool       is_parallel = vec::anti_parallel(a, b);
+
+    ASSERT_EQ(is_parallel, false);
+}
+TEST(Vec, AntiParallelZero)
+{
+    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f zero_vector = vec::vec3f();
+    bool       is_parallel = vec::parallel(a, zero_vector);
+
+    ASSERT_EQ(is_parallel, false);
+}
+
+TEST(Vec, PerpendicularAny)
+{
+    vec::vec3f a                = vec::normalized(vec::vec3f(1, -2, 3));
+    vec::vec3f b                = vec::normalized(vec::vec3f(5, 4, 1));
+    bool       is_perpendicular = vec::perpendicular(a, b);
+
+    ASSERT_EQ(is_perpendicular, true);
+}
+TEST(Vec, PerpendicularAnyNot)
+{
+    vec::vec3f a                = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f b                = vec::normalized(vec::vec3f(5, 6, 7));
+    bool       is_perpendicular = vec::perpendicular(a, b);
+
+    ASSERT_EQ(is_perpendicular, false);
+}
+TEST(Vec, PerpendicularZero)
+{
+    vec::vec3f a                = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f zero_vector      = vec::vec3f();
+    bool       is_perpendicular = vec::perpendicular(a, zero_vector);
+
+    ASSERT_EQ(is_perpendicular, true);
 }
 // endregion functions
 
