@@ -7,7 +7,6 @@
 #include <numeric>
 #include <ostream>
 
-
 // region macros
 
 
@@ -289,7 +288,7 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n> lerp(const vec<T, n>& a, const vec<T, n>& b, float t)
     {
-        return (a + t * b);
+        return a + t * (b - a);
     }
     template <typename T, int n>
     constexpr vec<T, n> reflect(const vec<T, n>& a, const vec<T, n>& normal)
