@@ -499,14 +499,14 @@ TEST(Vec, MultiplicationAny)
 
     ASSERT_EQ(b, vec::vec3f(10, 15, 20));
 }
-TEST(Vec, MultiplicatioZeroFactor)
+TEST(Vec, MultiplicationZeroFactor)
 {
     vec::vec3f a = vec::vec3f(2, 3, 4);
     vec::vec3f b = a * 0;
 
     ASSERT_EQ(b, vec::vec3f());
 }
-TEST(Vec, MultiplicatioZeroVector)
+TEST(Vec, MultiplicationZeroVector)
 {
     vec::vec3f zero_vector = vec::vec3f();
     vec::vec3f b           = zero_vector * 5;
@@ -549,6 +549,50 @@ TEST(Vec, DivisionZeroVector)
 
 // region scalar-vector
 
+TEST(Vec, MultiplicationAssignmentAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    a *= 5;
+
+    ASSERT_EQ(a, vec::vec3f(10, 15, 20));
+}
+TEST(Vec, MultiplicationAssignmentZeroFactor)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    a *= 0;
+
+    ASSERT_EQ(a, vec::vec3f());
+}
+TEST(Vec, MultiplicationAssignmentZeroVector)
+{
+    vec::vec3f zero_vector = vec::vec3f();
+    zero_vector *= 5;
+
+    ASSERT_EQ(zero_vector, vec::vec3f());
+}
+
+
+TEST(Vec, DivisionAssignmentAny)
+{
+    vec::vec3f a = vec::vec3f(10, 15, 20);
+    a /= 5;
+
+    ASSERT_EQ(a, vec::vec3f(2, 3, 4));
+}
+TEST(Vec, DivisionAssignmentZeroFactor)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    a /= 0;
+
+    ASSERT_EQ(a, vec::vec3f(std::numeric_limits<float>::infinity()));
+}
+TEST(Vec, DivisionAssignmentZeroVector)
+{
+    vec::vec3f zero_vector = vec::vec3f();
+    zero_vector /= 5;
+
+    ASSERT_EQ(zero_vector, vec::vec3f());
+}
 
 // endregion scalar-vector
 
