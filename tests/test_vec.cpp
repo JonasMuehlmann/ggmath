@@ -492,6 +492,52 @@ TEST(Vec, SubtractionWithNegativeComponends)
 // region scalar-vector
 
 
+TEST(Vec, MultiplicationAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = a * 5;
+
+    ASSERT_EQ(b, vec::vec3f(10, 15, 20));
+}
+TEST(Vec, MultiplicatioZeroFactor)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = a * 0;
+
+    ASSERT_EQ(b, vec::vec3f());
+}
+TEST(Vec, MultiplicatioZeroVector)
+{
+    vec::vec3f zero_vector = vec::vec3f();
+    vec::vec3f b           = zero_vector * 5;
+
+    ASSERT_EQ(b, vec::vec3f());
+}
+
+
+TEST(Vec, DivisionAny)
+{
+    vec::vec3f a = vec::vec3f(10, 15, 20);
+    vec::vec3f b = a / 5;
+
+    ASSERT_EQ(b, vec::vec3f(2, 3, 4));
+}
+TEST(Vec, DivisionZeroFactor)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = a / 0;
+
+    ASSERT_EQ(b, vec::vec3f(std::numeric_limits<float>::infinity()));
+}
+TEST(Vec, DivisionZeroVector)
+{
+    vec::vec3f zero_vector = vec::vec3f();
+    vec::vec3f b           = zero_vector / 5;
+
+    ASSERT_EQ(b, vec::vec3f());
+}
+
+
 // endregion scalar-vector
 
 
