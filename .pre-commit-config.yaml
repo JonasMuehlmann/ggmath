@@ -5,8 +5,8 @@ repos:
       - id: clang-format
         args: [ --sort-includes, --style=file ]
       - id: clang-tidy
-      - id: oclint
-        args: [ -enable-global-analysis ]
+      # - id: oclint
+      #   args: [ -enable-global-analysis ]
 
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
     rev: v4.1.0

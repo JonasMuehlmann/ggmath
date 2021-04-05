@@ -634,6 +634,7 @@ TEST(Vec, SubtractionAssignmentWithNegativeComponends)
     ASSERT_EQ(a, vec::vec3f(-1, -2, 0));
 }
 
+
 // endregion vector-vector
 
 
@@ -752,10 +753,110 @@ TEST(Vec, ShorterOrEqualAnyEqual)
 
     ASSERT_EQ(b <= a, true);
 }
+
+
 // endregion vector-vector
 
 
 // region scalar-vector
+
+
+TEST(Vec, LengthEqualAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a == vec::length(a), true);
+}
+TEST(Vec, LengthEqualAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(a == length(b), false);
+}
+
+
+TEST(Vec, LengthUnequalAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(2, 3, 3);
+
+    ASSERT_EQ(a != length(b), true);
+}
+TEST(Vec, LengthUnequalAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a != length(a), false);
+}
+
+
+TEST(Vec, LengthLongerAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a > 2, true);
+}
+TEST(Vec, LengthLongerAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a > 6, false);
+}
+
+
+TEST(Vec, LengthShorterAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a < 6, true);
+}
+TEST(Vec, LengthShorterAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a < 5, false);
+}
+
+
+TEST(Vec, LengthLongerOrEqualAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a >= 5, true);
+}
+TEST(Vec, LengthLongerOrEqualAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(6 >= a, false);
+}
+TEST(Vec, LengthLongerOrEqualAnyEqual)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a >= vec::length(a), true);
+}
+
+
+TEST(Vec, LengthShorterOrEqualAny)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(6 <= a, true);
+}
+TEST(Vec, LengthShorterOrEqualAnyNot)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(a <= 4, false);
+}
+TEST(Vec, LengthShorterOrEqualAnyEqual)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+
+    ASSERT_EQ(vec::length(a) <= a, true);
+}
 
 
 // endregion scalar-vector
