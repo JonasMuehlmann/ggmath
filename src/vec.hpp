@@ -84,7 +84,6 @@ namespace ggmath::vec
 
         constexpr explicit vec(T xy) : data{xy, xy} {}
         constexpr vec(T x, T y) : data{x, y} {}
-        constexpr vec(const vec<T, 2>& vec, T z) : data{vec.x, vec.y, z} {}
 
 
         // endregion constructors
@@ -113,6 +112,7 @@ namespace ggmath::vec
 
         constexpr explicit vec(T xyz) : data{xyz, xyz, xyz} {}
         constexpr vec(T x, T y, T z) : data{x, y, z} {}
+        constexpr vec(const vec<T, 2>& vec, T z) : data{vec.x, vec.y, z} {}
 
 
         // endregion constructors
