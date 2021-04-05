@@ -13,5 +13,5 @@ set(SOURCE_FILES
 set(HEADER_FILES
         vec.hpp
         mat.hpp
-        )
+        concepts.hpp)
 add_library(ggmath STATIC ${SOURCE_FILES} ${HEADER_FILES})
