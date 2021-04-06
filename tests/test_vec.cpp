@@ -382,6 +382,8 @@ TEST(Vec, ReflectParallel)
 
     ASSERT_EQ(b, b);
 }
+
+
 // endregion functions
 
 
