@@ -1,3 +1,15 @@
+# [2.1.0](https://github.com/JonasMuehlmann/ggmath/compare/v2.0.0...v2.1.0) (2021-04-06)
+
+
+### Bug Fixes
+
+* **vec:** moved false constructor from vec<T, 2> to vec<T, 3> ([225729a](https://github.com/JonasMuehlmann/ggmath/commit/225729acff2d4899a498eaa9b337553937a76530))
+
+
+### Features
+
+* **vec:** implement iterator and fix copy and move constructor ([3fb4f94](https://github.com/JonasMuehlmann/ggmath/commit/3fb4f94752ccc3f216e70a00a2762391882be281))
+
 # [2.0.0](https://github.com/JonasMuehlmann/ggmath/compare/v1.2.0...v2.0.0) (2021-04-04)
 
 
