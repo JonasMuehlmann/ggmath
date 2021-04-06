@@ -14,6 +14,11 @@
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage,-warnings-as-errors)
 #define COMMON_MEMBERS(n)                                                                              \
+                                                                                                       \
+                                                                                                       \
+    /* region Constructors */                                                                          \
+                                                                                                       \
+                                                                                                       \
     constexpr explicit vec()                                                                           \
     {                                                                                                  \
         data.fill(0);                                                                                  \
@@ -28,12 +33,16 @@
                                                                                                        \
     constexpr vec(std::initializer_list<T> _data) : data(_data) {}                                     \
                                                                                                        \
+                                                                                                       \
+    /* endregion Constructors */                                                                       \
+                                                                                                       \
+                                                                                                       \
     constexpr vec& operator=(const vec& other)                                                         \
     {                                                                                                  \
         if (this == &other)                                                                            \
             return *this;                                                                              \
                                                                                                        \
-        data = other.data;                                                                             \
+        data = other;                                                                                  \
         return *this;                                                                                  \
     }                                                                                                  \
     constexpr vec& operator=(vec&& other) noexcept                                                     \
@@ -41,17 +50,79 @@
         if (this == &other)                                                                            \
             return *this;                                                                              \
                                                                                                        \
-        data = std::move(other.data);                                                                  \
+        data = std::move(other);                                                                       \
         return *this;                                                                                  \
     }                                                                                                  \
-    constexpr T operator[](size_t i) const                                                             \
+    constexpr T& operator[](size_t i)                                                                  \
     {                                                                                                  \
         return data[i];                                                                                \
     }                                                                                                  \
-    ~vec() = default;
-
-
-// endregion macros
+    constexpr const T& operator[](size_t i) const                                                      \
+    {                                                                                                  \
+        return data[i];                                                                                \
+    }                                                                                                  \
+                                                                                                       \
+    ~vec() = default;                                                                                  \
+                                                                                                       \
+                                                                                                       \
+    /* region Iterators */                                                                             \
+                                                                                                       \
+                                                                                                       \
+    constexpr auto begin() noexcept                                                                    \
+    {                                                                                                  \
+        return data.begin();                                                                           \
+    }                                                                                                  \
+    constexpr auto begin() const noexcept                                                              \
+    {                                                                                                  \
+        return data.begin();                                                                           \
+    }                                                                                                  \
+    constexpr auto end() noexcept                                                                      \
+    {                                                                                                  \
+        return data.end();                                                                             \
+    }                                                                                                  \
+    constexpr auto end() const noexcept                                                                \
+    {                                                                                                  \
+        return data.end();                                                                             \
+    }                                                                                                  \
+    constexpr auto cbegin() const noexcept                                                             \
+    {                                                                                                  \
+        return data.cbegin();                                                                          \
+    }                                                                                                  \
+    constexpr auto cend() const noexcept                                                               \
+    {                                                                                                  \
+        return data.cend();                                                                            \
+    }                                                                                                  \
+    constexpr auto rbegin() noexcept                                                                   \
+    {                                                                                                  \
+        return data.rbegin();                                                                          \
+    }                                                                                                  \
+    constexpr auto rbegin() const noexcept                                                             \
+    {                                                                                                  \
+        return data.rbegin();                                                                          \
+    }                                                                                                  \
+    constexpr auto rend() noexcept                                                                     \
+    {                                                                                                  \
+        return data.rend();                                                                            \
+    }                                                                                                  \
+                                                                                                       \
+    constexpr auto rend() const noexcept                                                               \
+    {                                                                                                  \
+        return data.rend();                                                                            \
+    }                                                                                                  \
+    constexpr auto crbegin() const noexcept                                                            \
+    {                                                                                                  \
+        return data.crbegin();                                                                         \
+    }                                                                                                  \
+    constexpr auto crend() const noexcept                                                              \
+    {                                                                                                  \
+        return data.crend();                                                                           \
+    }                                                                                                  \
+                                                                                                       \
+                                                                                                       \
+    /* endregion iterators */                                                                          \
+                                                                                                       \
+                                                                                                       \
+    // endregion macros
 
 
 namespace ggmath::vec
@@ -266,26 +337,24 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr T min(const vec<T, n>& vec)
     {
-        return *std::min_element(std::begin(vec.data), std::end(vec.data));
+        return *std::min_element(std::begin(vec), std::end(vec));
     }
     template <typename T, int n>
     constexpr T max(const vec<T, n>& vec)
     {
-        return *std::max_element(std::begin(vec.data), std::end(vec.data));
+        return *std::max_element(std::begin(vec), std::end(vec));
     }
     template <typename T, int n>
     constexpr size_t index_min(const vec<T, n>& vec)
     {
-        return std::distance(
-            std::begin(vec.data),
-            std::min_element(std::begin(vec.data), std::end(vec.data)));
+        return std::distance(std::begin(vec),
+                             std::min_element(std::begin(vec), std::end(vec)));
     }
     template <typename T, int n>
     constexpr size_t index_max(const vec<T, n>& vec)
     {
-        return std::distance(
-            std::begin(vec.data),
-            std::max_element(std::begin(vec.data), std::end(vec.data)));
+        return std::distance(std::begin(vec),
+                             std::max_element(std::begin(vec), std::end(vec)));
     }
     template <typename T, int n>
     constexpr vec<T, n> lerp(const vec<T, n>& a, const vec<T, n>& b, float t)
@@ -310,10 +379,8 @@ namespace ggmath::vec
     constexpr vec<T, n> operator-(const vec<T, n>& a)
     {
         vec<T, n> vector;
-        std::transform(std::begin(a.data),
-                       std::end(a.data),
-                       std::begin(vector.data),
-                       std::negate<T>());
+        std::transform(
+            std::begin(a), std::end(a), std::begin(vector), std::negate<T>());
         return vector;
     }
 
@@ -328,8 +395,7 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr float operator*(const vec<T, n>& a, const vec<T, n>& b)
     {
-        return std::inner_product(
-            std::begin(a.data), std::end(a.data), std::begin(b.data), 0.0);
+        return std::inner_product(std::begin(a), std::end(a), std::begin(b), 0.0);
     }
     // Cross product
     template <typename T, int n>
@@ -341,22 +407,16 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n> operator+(const vec<T, n>& a, vec<T, n> b)
     {
-        std::transform(std::begin(a.data),
-                       std::end(a.data),
-                       std::begin(b.data),
-                       std::begin(b.data),
-                       std::plus<T>());
+        std::transform(
+            std::begin(a), std::end(a), std::begin(b), std::begin(b), std::plus<T>());
         return b;
     }
     // Vector-vector subtraction
     template <typename T, int n>
     constexpr vec<T, n> operator-(const vec<T, n>& a, vec<T, n> b)
     {
-        std::transform(std::begin(a.data),
-                       std::end(a.data),
-                       std::begin(b.data),
-                       std::begin(b.data),
-                       std::minus<T>());
+        std::transform(
+            std::begin(a), std::end(a), std::begin(b), std::begin(b), std::minus<T>());
         return b;
     }
 
@@ -371,10 +431,10 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n> operator*(const float scalar, vec<T, n> vec)
     {
-        std::transform(std::begin(vec.data),
-                       std::end(vec.data),
-                       std::begin(vec.data),
-                       [scalar](T element) { return element * scalar; });
+        std::transform(
+            std::begin(vec), std::end(vec), std::begin(vec), [scalar](T element) {
+                return element * scalar;
+            });
         return vec;
     }
     // Scalar-vector multiplication
@@ -387,10 +447,10 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n> operator/(const float scalar, vec<T, n> vec)
     {
-        std::transform(std::begin(vec.data),
-                       std::end(vec.data),
-                       std::begin(vec.data),
-                       [scalar](T element) { return element / scalar; });
+        std::transform(
+            std::begin(vec), std::end(vec), std::begin(vec), [scalar](T element) {
+                return element / scalar;
+            });
         return vec;
     }
     // Scalar-vector division
@@ -417,10 +477,10 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n>& operator*=(vec<T, n>& vec, const float scalar)
     {
-        std::transform(std::begin(vec.data),
-                       std::end(vec.data),
-                       std::begin(vec.data),
-                       [scalar](T element) { return element * scalar; });
+        std::transform(
+            std::begin(vec), std::end(vec), std::begin(vec), [scalar](T element) {
+                return element * scalar;
+            });
         return vec;
     }
 
@@ -428,10 +488,10 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n>& operator/=(vec<T, n>& vec, const float scalar)
     {
-        std::transform(std::begin(vec.data),
-                       std::end(vec.data),
-                       std::begin(vec.data),
-                       [scalar](T element) { return element / scalar; });
+        std::transform(
+            std::begin(vec), std::end(vec), std::begin(vec), [scalar](T element) {
+                return element / scalar;
+            });
         return vec;
     }
 
@@ -446,22 +506,16 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n>& operator+=(vec<T, n>& a, const vec<T, n>& b)
     {
-        std::transform(std::begin(a.data),
-                       std::end(a.data),
-                       std::begin(b.data),
-                       std::begin(a.data),
-                       std::plus<T>());
+        std::transform(
+            std::begin(a), std::end(a), std::begin(b), std::begin(a), std::plus<T>());
         return a;
     }
     // Vector-vector subtraction-assignment
     template <typename T, int n>
     constexpr vec<T, n>& operator-=(vec<T, n>& a, const vec<T, n>& b)
     {
-        std::transform(std::begin(a.data),
-                       std::end(a.data),
-                       std::begin(b.data),
-                       std::begin(a.data),
-                       std::minus<T>());
+        std::transform(
+            std::begin(a), std::end(a), std::begin(b), std::begin(a), std::minus<T>());
         return a;
     }
 
@@ -482,16 +536,14 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr bool operator==(const vec<T, n>& a, const vec<T, n>& b)
     {
-        return std::equal(
-            std::begin(a.data), std::end(a.data), std::begin(b.data), std::end(b.data));
+        return std::equal(std::begin(a), std::end(a), std::begin(b), std::end(b));
     }
 
     // Compare component-wise equality
     template <typename T, int n>
     constexpr bool operator!=(const vec<T, n>& a, const vec<T, n>& b)
     {
-        return !std::equal(
-            std::begin(a.data), std::end(a.data), std::begin(b.data), std::end(b.data));
+        return !std::equal(std::begin(a), std::end(a), std::begin(b), std::end(b));
     }
 
     // Compare length
@@ -628,12 +680,12 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr std::ostream& operator<<(std::ostream& os, const vec<T, n>& vec)
     {
-        const auto last = std::end(vec.data) - 1;
+        const auto last = std::end(vec) - 1;
 
         os << '(';
         // Loop ends before last
         std::for_each(
-            std::begin(vec.data), last, [&os](T element) { os << element << ','; });
+            std::begin(vec), last, [&os](T element) { os << element << ','; });
         os << *last;
         os << ')';
 
