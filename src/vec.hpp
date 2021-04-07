@@ -337,24 +337,23 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr T min(const vec<T, n>& vec)
     {
-        return *std::min_element(std::begin(vec), std::end(vec));
+        return *std::ranges::min_element(vec);
     }
     template <typename T, int n>
     constexpr T max(const vec<T, n>& vec)
     {
-        return *std::max_element(std::begin(vec), std::end(vec));
+        return *std::ranges::max_element(vec);
     }
     template <typename T, int n>
     constexpr size_t index_min(const vec<T, n>& vec)
     {
-        return std::distance(std::begin(vec),
-                             std::min_element(std::begin(vec), std::end(vec)));
+        return std::ranges::distance(std::begin(vec), std::ranges::min_element(vec));
     }
     template <typename T, int n>
     constexpr size_t index_max(const vec<T, n>& vec)
     {
-        return std::distance(std::begin(vec),
-                             std::max_element(std::begin(vec), std::end(vec)));
+        return std::ranges::distance(
+            std::begin(vec), std::ranges::max_element(std::begin(vec), std::end(vec)));
     }
     template <typename T, int n>
     constexpr vec<T, n> lerp(const vec<T, n>& a, const vec<T, n>& b, float t)
@@ -379,7 +378,7 @@ namespace ggmath::vec
     constexpr vec<T, n> operator-(const vec<T, n>& a)
     {
         vec<T, n> vector;
-        std::transform(
+        std::ranges::transform(
             std::begin(a), std::end(a), std::begin(vector), std::negate<T>());
         return vector;
     }
@@ -407,16 +406,14 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n> operator+(const vec<T, n>& a, vec<T, n> b)
     {
-        std::transform(
-            std::begin(a), std::end(a), std::begin(b), std::begin(b), std::plus<T>());
+        std::ranges::transform(a, b, std::begin(b), std::plus<T>());
         return b;
     }
     // Vector-vector subtraction
     template <typename T, int n>
     constexpr vec<T, n> operator-(const vec<T, n>& a, vec<T, n> b)
     {
-        std::transform(
-            std::begin(a), std::end(a), std::begin(b), std::begin(b), std::minus<T>());
+        std::ranges::transform(a, b, std::begin(b), std::minus<T>());
         return b;
     }
 
@@ -431,10 +428,8 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n> operator*(const float scalar, vec<T, n> vec)
     {
-        std::transform(
-            std::begin(vec), std::end(vec), std::begin(vec), [scalar](T element) {
-                return element * scalar;
-            });
+        std::ranges::transform(
+            vec, std::begin(vec), [scalar](T element) { return element * scalar; });
         return vec;
     }
     // Scalar-vector multiplication
@@ -447,10 +442,8 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n> operator/(const float scalar, vec<T, n> vec)
     {
-        std::transform(
-            std::begin(vec), std::end(vec), std::begin(vec), [scalar](T element) {
-                return element / scalar;
-            });
+        std::ranges::transform(
+            vec, std::begin(vec), [scalar](T element) { return element / scalar; });
         return vec;
     }
     // Scalar-vector division
@@ -477,10 +470,8 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n>& operator*=(vec<T, n>& vec, const float scalar)
     {
-        std::transform(
-            std::begin(vec), std::end(vec), std::begin(vec), [scalar](T element) {
-                return element * scalar;
-            });
+        std::ranges::transform(
+            vec, std::begin(vec), [scalar](T element) { return element * scalar; });
         return vec;
     }
 
@@ -488,10 +479,8 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n>& operator/=(vec<T, n>& vec, const float scalar)
     {
-        std::transform(
-            std::begin(vec), std::end(vec), std::begin(vec), [scalar](T element) {
-                return element / scalar;
-            });
+        std::ranges::transform(
+            vec, std::begin(vec), [scalar](T element) { return element / scalar; });
         return vec;
     }
 
@@ -506,16 +495,14 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n>& operator+=(vec<T, n>& a, const vec<T, n>& b)
     {
-        std::transform(
-            std::begin(a), std::end(a), std::begin(b), std::begin(a), std::plus<T>());
+        std::ranges::transform(a, b, std::begin(a), std::plus<T>());
         return a;
     }
     // Vector-vector subtraction-assignment
     template <typename T, int n>
     constexpr vec<T, n>& operator-=(vec<T, n>& a, const vec<T, n>& b)
     {
-        std::transform(
-            std::begin(a), std::end(a), std::begin(b), std::begin(a), std::minus<T>());
+        std::ranges::transform(a, b, std::begin(a), std::minus<T>());
         return a;
     }
 
@@ -536,14 +523,14 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr bool operator==(const vec<T, n>& a, const vec<T, n>& b)
     {
-        return std::equal(std::begin(a), std::end(a), std::begin(b), std::end(b));
+        return std::ranges::equal(a, b);
     }
 
     // Compare component-wise equality
     template <typename T, int n>
     constexpr bool operator!=(const vec<T, n>& a, const vec<T, n>& b)
     {
-        return !std::equal(std::begin(a), std::end(a), std::begin(b), std::end(b));
+        return !std::ranges::equal(a, b);
     }
 
     // Compare length
