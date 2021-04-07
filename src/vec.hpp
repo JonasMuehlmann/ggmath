@@ -16,7 +16,7 @@
 #define COMMON_MEMBERS(n)                                                                              \
                                                                                                        \
                                                                                                        \
-    /* region Constructors */                                                                          \
+    /* region macros::constructors */                                                                  \
                                                                                                        \
                                                                                                        \
     constexpr explicit vec()                                                                           \
@@ -41,44 +41,10 @@
     constexpr vec(std::initializer_list<T> _data) : data(_data) {}                                     \
                                                                                                        \
                                                                                                        \
-    /* endregion Constructors */                                                                       \
+    /* endregion macros::cnstructors */                                                                \
                                                                                                        \
                                                                                                        \
-    constexpr vec& operator=(const vec& other)                                                         \
-    {                                                                                                  \
-        if (this == &other)                                                                            \
-            return *this;                                                                              \
-                                                                                                       \
-        data = other;                                                                                  \
-        return *this;                                                                                  \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr vec& operator=(vec&& other) noexcept                                                     \
-    {                                                                                                  \
-        if (this == &other)                                                                            \
-            return *this;                                                                              \
-                                                                                                       \
-        data = std::move(other);                                                                       \
-        return *this;                                                                                  \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr T& operator[](size_t i)                                                                  \
-    {                                                                                                  \
-        return data[i];                                                                                \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr const T& operator[](size_t i) const                                                      \
-    {                                                                                                  \
-        return data[i];                                                                                \
-    }                                                                                                  \
-                                                                                                       \
-    ~vec() = default;                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    /* region Iterators */                                                                             \
+    /* region macros::ierators */                                                                      \
                                                                                                        \
                                                                                                        \
     constexpr auto begin() noexcept                                                                    \
@@ -153,7 +119,47 @@
     }                                                                                                  \
                                                                                                        \
                                                                                                        \
-    /* endregion iterators */                                                                          \
+    /* endregion macros::iterators */                                                                  \
+                                                                                                       \
+                                                                                                       \
+    /* region macros::other */                                                                         \
+                                                                                                       \
+                                                                                                       \
+    constexpr vec& operator=(const vec& other)                                                         \
+    {                                                                                                  \
+        if (this == &other)                                                                            \
+            return *this;                                                                              \
+                                                                                                       \
+        data = other;                                                                                  \
+        return *this;                                                                                  \
+    }                                                                                                  \
+                                                                                                       \
+                                                                                                       \
+    constexpr vec& operator=(vec&& other) noexcept                                                     \
+    {                                                                                                  \
+        if (this == &other)                                                                            \
+            return *this;                                                                              \
+                                                                                                       \
+        data = std::move(other);                                                                       \
+        return *this;                                                                                  \
+    }                                                                                                  \
+                                                                                                       \
+                                                                                                       \
+    constexpr T& operator[](size_t i)                                                                  \
+    {                                                                                                  \
+        return data[i];                                                                                \
+    }                                                                                                  \
+                                                                                                       \
+                                                                                                       \
+    constexpr const T& operator[](size_t i) const                                                      \
+    {                                                                                                  \
+        return data[i];                                                                                \
+    }                                                                                                  \
+                                                                                                       \
+    ~vec() = default;                                                                                  \
+                                                                                                       \
+                                                                                                       \
+    /* endregion macros::other */                                                                      \
                                                                                                        \
                                                                                                        \
     // endregion macros
@@ -188,7 +194,7 @@ namespace ggmath::vec
         COMMON_MEMBERS(2)
 
 
-        // region constructors
+        // region classes::constructors
 
 
         constexpr explicit vec(T xy) : data{xy, xy} {}
@@ -197,7 +203,7 @@ namespace ggmath::vec
         constexpr vec(T x, T y) : data{x, y} {}
 
 
-        // endregion constructors
+        // endregion classes::constructors
     };
     template <typename T>
     struct vec<T, 3>
@@ -221,7 +227,7 @@ namespace ggmath::vec
         COMMON_MEMBERS(3)
 
 
-        // region constructors
+        // region classes::constructors
 
 
         constexpr explicit vec(T xyz) : data{xyz, xyz, xyz} {}
@@ -231,7 +237,7 @@ namespace ggmath::vec
         constexpr vec(const vec<T, 2>& vec, T z) : data{vec.x, vec.y, z} {}
 
 
-        // endregion constructors
+        // endregion classes::constructors
     };
     // TODO: Find out how to correctly handle fourth component
     template <typename T>
@@ -256,7 +262,7 @@ namespace ggmath::vec
         COMMON_MEMBERS(4);
 
 
-        // region constructors
+        // region classes::constructors
 
 
         constexpr explicit vec(T xyzw) : data{xyzw, xyzw, xyzw, xyzw} {}
@@ -270,7 +276,7 @@ namespace ggmath::vec
         {}
 
 
-        // endregion constructors
+        // endregion classes::constructors
     };
 
 
@@ -459,24 +465,13 @@ namespace ggmath::vec
     // endregion functions
 
 
-    // region operator overloads
+    // region operator_overloads
 
 
-    // Invert vector
-    template <typename T, int n>
-    constexpr vec<T, n> operator-(const vec<T, n>& a)
-    {
-        vec<T, n> vector;
-        std::ranges::transform(
-            std::begin(a), std::end(a), std::begin(vector), std::negate<T>());
-        return vector;
-    }
+    // region operator_overloads::binary
 
 
-    // region binary operators
-
-
-    // region vector-vector
+    // region operator_overloads::binary::vector-vector
 
 
     // Dot product
@@ -513,10 +508,10 @@ namespace ggmath::vec
     }
 
 
-    // endregion vector-vector
+    // endregion operator_overloads::binary::vector-vector
 
 
-    // region scalar-vector
+    // region operator_overloads::binary::scalar-vector
 
 
     // Scalar-vector multiplication
@@ -555,16 +550,16 @@ namespace ggmath::vec
     }
 
 
-    // endregion scalar-vector
+    // endregion operator_overloads::binary::scalar-vector
 
 
-    // endregion binary operators
+    // endregion operator_overloads::binary
 
 
-    // region assignment operators
+    // region operator_overloads::assignment
 
 
-    // region scalar-vector
+    // region operator_overloads::assignment::scalar-vector
 
 
     // Scalar-vector multiplication assignment
@@ -586,10 +581,10 @@ namespace ggmath::vec
     }
 
 
-    // endregion scalar-vector
+    // endregion operator_overloads::assignment::scalar-vector
 
 
-    // region vector-vector
+    // region operator_overloads::assignment::vector-vector
 
 
     // Vector-vector addition-assignment
@@ -613,13 +608,13 @@ namespace ggmath::vec
     // endregion vector-vector
 
 
-    // endregion assignment operators
+    // endregion operator_overloads::assignment
 
 
-    // region comparison operators
+    // region operator_overloads::comparison
 
 
-    // region vector-vector
+    // region operator_overloads::comparison::vector-vector
 
 
     // Compare component-wise equality
@@ -670,10 +665,10 @@ namespace ggmath::vec
     }
 
 
-    // endregion vector-vector
+    // endregion operator_overloads::comparison::vector-vector
 
 
-    // region scalar-vector
+    // region operator_overloads::comparison::scalar-vector
 
 
     // Compare length
@@ -782,10 +777,24 @@ namespace ggmath::vec
     }
 
 
-    // endregion scalar-vector
+    // endregion operator_overloads::comparison::scalar-vector
 
 
-    // endregion comparison operators
+    // endregion operator_overloads::comparison
+
+
+    // region operator_overloads::other
+
+
+    // Invert vector
+    template <typename T, int n>
+    constexpr vec<T, n> operator-(const vec<T, n>& a)
+    {
+        vec<T, n> vector;
+        std::ranges::transform(
+            std::begin(a), std::end(a), std::begin(vector), std::negate<T>());
+        return vector;
+    }
 
 
     // Format: (data[0],data[2],...,data[n])
@@ -805,7 +814,10 @@ namespace ggmath::vec
     }
 
 
-    // endregion operator overloads
+    // endregion operator_overloads::other
+
+
+    // endregion operator_overloads
 
 
     using vec2f  = vec<float, 2>;
