@@ -4,7 +4,7 @@ project(ggmath_tests)
 set(TEST_FILES
         test.cpp
         test_vec.cpp
-        )
+        test_util.cpp)
 
 find_package(Threads REQUIRED)
 add_executable(ggmath_tests test.cpp ${TEST_FILES})

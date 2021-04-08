@@ -8,7 +8,12 @@ include_directories(${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/src)
 set(HEADER_FILES
         vec.hpp
         mat.hpp
-        concepts.hpp)
+        graphics.hpp
+        intersection.hpp
+        physics.hpp
+        ray.hpp
+        types.hpp
+        util.hpp)
 
 add_library(ggmath STATIC ${HEADER_FILES})
 

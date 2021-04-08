@@ -13,14 +13,13 @@
 // CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
-#ifndef GG_MATH_CONCEPTS_HPP
-#define GG_MATH_CONCEPTS_HPP
-#include <type_traits>
-
-namespace ggmath
+#ifndef GG_MATH_PHYSICS_HPP
+#define GG_MATH_PHYSICS_HPP
+namespace ggmath::physics
 {
-    template <typename T>
-    concept Scalar = std::is_scalar<T>::value;
-}    // namespace ggmath
-
-#endif    // GG_MATH_CONCEPTS_HPP
+    // TODO: implement refraction
+    // TODO: implement blinn-phong
+    // TODO: implement lambertian
+    // TODO: implement snells law
+}    // namespace ggmath::physics
+#endif    // GG_MATH_PHYSICS_HPP
