@@ -403,7 +403,6 @@ namespace ggmath::vec
 
     /**
      * @brief Return a copy of vec with a length of length * factor
-     *
      */
     template <typename T, int n>
     constexpr vec<T, n> scaled_by(const vec<T, n>& vec, float factor)
@@ -447,8 +446,8 @@ namespace ggmath::vec
     constexpr bool parallel(const vec<T, n>& a, const vec<T, n>& b)
     {
 #ifdef GGMATH_DEBUG
-        ggmath::debug::check_unit_vector(a);
-        ggmath::debug::check_unit_vector(b);
+        ggmath::debug::throw_if_not_unit(a);
+        ggmath::debug::throw_if_not_unit(b);
 #endif
         return a * b == 1;
     }
@@ -465,8 +464,8 @@ namespace ggmath::vec
     constexpr bool anti_parallel(const vec<T, n>& a, const vec<T, n>& b)
     {
 #ifdef GGMATH_DEBUG
-        ggmath::debug::check_unit_vector(a);
-        ggmath::debug::check_unit_vector(b);
+        ggmath::debug::throw_if_not_unit(a);
+        ggmath::debug::throw_if_not_unit(b);
 #endif
         return a * b == -1;
     }
@@ -483,8 +482,8 @@ namespace ggmath::vec
     constexpr bool perpendicular(const vec<T, n>& a, const vec<T, n>& b)
     {
 #ifdef GGMATH_DEBUG
-        ggmath::debug::check_unit_vector(a);
-        ggmath::debug::check_unit_vector(b);
+        ggmath::debug::throw_if_not_unit(a);
+        ggmath::debug::throw_if_not_unit(b);
 #endif
         return std::abs(a * b) <= std::numeric_limits<float>::epsilon();
     }
@@ -547,8 +546,7 @@ namespace ggmath::vec
 
 
     /**
-     * Return a vector that is the linear interpolation between a and b with a weight of
-     * t
+     * Return a vector that is the linear interpolation from a to b with a weight of t
      */
     template <typename T, int n>
     constexpr vec<T, n> lerp(const vec<T, n>& a, const vec<T, n>& b, float t)
@@ -559,6 +557,7 @@ namespace ggmath::vec
 
     /**
      * Reflect the vector a about normal
+     *
      * If the vectors have a length other than 1, the result will be incorrect.
      * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
      * NOT a unit-vector.
@@ -567,8 +566,8 @@ namespace ggmath::vec
     constexpr vec<T, n> reflect(const vec<T, n>& a, const vec<T, n>& normal)
     {
 #ifdef GGMATH_DEBUG
-        ggmath::debug::check_unit_vector(a);
-        ggmath::debug::check_unit_vector(normal);
+        ggmath::debug::throw_if_not_unit(a);
+        ggmath::debug::throw_if_not_unit(normal);
 #endif
         return a - 2 * (a * normal) * normal;
     }
