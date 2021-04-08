@@ -341,6 +341,9 @@ namespace ggmath::vec
     // region functions
 
 
+    /**
+     * @brief Calculate the cross product(a x b) of two vectors a and b
+     */
     template <typename T>
     constexpr vec<T, 3> cross(const vec<T, 3>& a, const vec<T, 3>& b)
     {
@@ -350,28 +353,32 @@ namespace ggmath::vec
     }
 
 
+    /**
+     * @brief Calculate the length of vec
+     */
     template <typename T, int n>
     constexpr float length(const vec<T, n>& vec)
     {
-        if (vec == ggmath::vec::vec<T, 3>())
-        {
-            return 0;
-        }
         return abs(std::sqrt(vec * vec));
     }
 
 
+    /**
+     * @brief Calculate the squared length of vec
+     *
+     * This function is potentially faster than squaring the length after calculating it
+     * (length(vec) * length(vec))
+     */
     template <typename T, int n>
     constexpr float length_squared(const vec<T, n>& vec)
     {
-        if (vec == ggmath::vec::vec<T, 3>())
-        {
-            return 0;
-        }
         return vec * vec;
     }
 
 
+    /**
+     * @brief Return a copy of vec scaled to a length of 1
+     */
     template <typename T, int n>
     constexpr vec<T, n> normalized(const vec<T, n>& vec)
     {
@@ -379,13 +386,19 @@ namespace ggmath::vec
     }
 
 
+    /**
+     * @brief Return a copy of vec with a length of length * factor
+     *
+     */
     template <typename T, int n>
     constexpr vec<T, n> scaled_by(const vec<T, n>& vec, float factor)
     {
         return vec * factor;
     }
 
-
+    /**
+     * @brief Return a copy of vec with a length of wanted_magnitude
+     */
     template <typename T, int n>
     constexpr vec<T, n> scaled_to(const vec<T, n>& vec, float wanted_magnitude)
     {
@@ -398,14 +411,23 @@ namespace ggmath::vec
         return scaled_by(vec, factor);
     }
 
-
+    /**
+     * @brief Return the signed distance from a to b
+     */
     template <typename T, int n>
     constexpr float distance(const vec<T, n>& a, const vec<T, n>& b)
     {
         return length((a - b));
     }
 
-
+    /**
+     * @brief Check whetever or not the unit-vectors a and b are parallel (point in the
+     * same direction)
+     *
+     * If the vectors have a length other than 1, the result will be incorrect.
+     * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
+     * NOT a unit-vector.
+     */
     template <typename T, int n>
     constexpr bool parallel(const vec<T, n>& a, const vec<T, n>& b)
     {
@@ -416,7 +438,14 @@ namespace ggmath::vec
         return a * b == 1;
     }
 
-
+    /**
+     * @brief Check whetever or not the unit-vectors a and b are anti-parallel(point in
+     * the opposite direction)
+     *
+     * If the vectors have a length other than 1, the result will be incorrect.
+     * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
+     * NOT a unit-vector.
+     */
     template <typename T, int n>
     constexpr bool anti_parallel(const vec<T, n>& a, const vec<T, n>& b)
     {
@@ -427,7 +456,14 @@ namespace ggmath::vec
         return a * b == -1;
     }
 
-
+    /**
+     * @brief Check whetever or not the unit-vectors a and b are perpendicular(the angle
+     * between them is 90 deg)
+     *
+     * If the vectors have a length other than 1, the result will be incorrect.
+     * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
+     * NOT a unit-vector.
+     */
     template <typename T, int n>
     constexpr bool perpendicular(const vec<T, n>& a, const vec<T, n>& b)
     {
@@ -439,41 +475,54 @@ namespace ggmath::vec
     }
 
 
+    /**
+     * @brief Return the angle between the vectors
+     */
     template <typename T, int n>
     constexpr float angle_between(const vec<T, n>& a, const vec<T, n>& b)
     {
         return std::acos((a * b) / (std::abs(length(a)) * std::abs(length(b))));
     }
 
-
+    /**
+     * @brief Check if the given vector has a length of 1
+     */
     template <typename T, int n>
     constexpr bool is_unit_vector(const vec<T, n>& vec)
     {
         return length(vec) == 1;
     }
 
-
+    /**
+     * @brief Return the smallest element in the vector
+     */
     template <typename T, int n>
     constexpr T min(const vec<T, n>& vec)
     {
         return *std::ranges::min_element(vec);
     }
 
-
+    /**
+     * @brief Return the largest element in the vector
+     */
     template <typename T, int n>
     constexpr T max(const vec<T, n>& vec)
     {
         return *std::ranges::max_element(vec);
     }
 
-
+    /**
+     * @brief Return the 0-based index of the smallest element in the vector
+     */
     template <typename T, int n>
     constexpr size_t index_min(const vec<T, n>& vec)
     {
         return std::ranges::distance(std::begin(vec), std::ranges::min_element(vec));
     }
 
-
+    /**
+     * @brief Return the 0-based index of the largest element in the vector
+     */
     template <typename T, int n>
     constexpr size_t index_max(const vec<T, n>& vec)
     {
@@ -482,6 +531,10 @@ namespace ggmath::vec
     }
 
 
+    /**
+     * Return a vector that is the linear interpolation between a and b with a weight of
+     * t
+     */
     template <typename T, int n>
     constexpr vec<T, n> lerp(const vec<T, n>& a, const vec<T, n>& b, float t)
     {
@@ -489,6 +542,12 @@ namespace ggmath::vec
     }
 
 
+    /**
+     * Reflect the vector a about normal
+     * If the vectors have a length other than 1, the result will be incorrect.
+     * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
+     * NOT a unit-vector.
+     */
     template <typename T, int n>
     constexpr vec<T, n> reflect(const vec<T, n>& a, const vec<T, n>& normal)
     {
@@ -868,6 +927,9 @@ namespace ggmath::vec
 
 namespace ggmath::debug
 {
+    /**
+     * @brief Throw an invalid_argument exception if vec has a length other than 1
+     */
     template <typename T, int n>
     void throw_if_not_unit(const ggmath::vec::vec<T, n>& vec)
     {
