@@ -166,45 +166,57 @@ TEST(Vec, ParallelZero)
 {
     vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
     vec::vec3f zero_vector = vec::vec3f();
-    bool       is_parallel = vec::anti_parallel(a, zero_vector);
 
+#ifdef GGMATH_DEBUG
+    ASSERT_THROW(vec::parallel(a, zero_vector), std::invalid_argument);
+#else
+    bool is_parallel = vec::parallel(a, zero_vector);
     ASSERT_EQ(is_parallel, false);
+#endif
 }
 
 
 TEST(Vec, AntiParallelAny)
 {
-    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b           = vec::normalized(vec::vec3f(-4, -6, -8));
-    bool       is_parallel = vec::anti_parallel(a, b);
+    vec::vec3f a                = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f b                = vec::normalized(vec::vec3f(-4, -6, -8));
+    bool       is_anti_parallel = vec::anti_parallel(a, b);
 
-    ASSERT_EQ(is_parallel, true);
+    ASSERT_EQ(is_anti_parallel, true);
 }
 TEST(Vec, AntiParallelAnyNot)
 {
-    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b           = vec::normalized(vec::vec3f(4, 6, 7));
-    bool       is_parallel = vec::anti_parallel(a, b);
+    vec::vec3f a                = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f b                = vec::normalized(vec::vec3f(4, 6, 7));
+    bool       is_anti_parallel = vec::anti_parallel(a, b);
 
-    ASSERT_EQ(is_parallel, false);
+    ASSERT_EQ(is_anti_parallel, false);
 }
 TEST(Vec, AntiParallelZero)
 {
     vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
     vec::vec3f zero_vector = vec::vec3f();
-    bool       is_parallel = vec::parallel(a, zero_vector);
 
-    ASSERT_EQ(is_parallel, false);
+#ifdef GGMATH_DEBUG
+    ASSERT_THROW(anti_parallel(a, zero_vector), std::invalid_argument);
+#else
+    bool is_anti_parallel = vec::anti_parallel(a, zero_vector);
+    ASSERT_EQ(is_anti_parallel, false);
+#endif
 }
 
 
 TEST(Vec, PerpendicularAny)
 {
-    vec::vec3f a                = vec::normalized(vec::vec3f(1, -2, 3));
-    vec::vec3f b                = vec::normalized(vec::vec3f(5, 4, 1));
-    bool       is_perpendicular = vec::perpendicular(a, b);
+    vec::vec3f a = vec::normalized(vec::vec3f(1, -2, 3));
+    vec::vec3f b = vec::normalized(vec::vec3f(5, 4, 1));
 
+#ifdef GGMATH_DEBUG
+    ASSERT_THROW(vec::perpendicular(a, b), std::invalid_argument);
+#else
+    bool is_perpendicular = vec::perpendicular(a, b);
     ASSERT_EQ(is_perpendicular, true);
+#endif
 }
 TEST(Vec, PerpendicularAnyNot)
 {
@@ -216,11 +228,15 @@ TEST(Vec, PerpendicularAnyNot)
 }
 TEST(Vec, PerpendicularZero)
 {
-    vec::vec3f a                = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f zero_vector      = vec::vec3f();
-    bool       is_perpendicular = vec::perpendicular(a, zero_vector);
+    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f zero_vector = vec::vec3f();
 
+#ifdef GGMATH_DEBUG
+    ASSERT_THROW(vec::perpendicular(a, zero_vector), std::invalid_argument);
+#else
+    bool is_perpendicular = vec::perpendicular(a, zero_vector);
     ASSERT_EQ(is_perpendicular, true);
+#endif
 }
 
 
@@ -354,9 +370,13 @@ TEST(Vec, ReflectAny)
 {
     vec::vec3f a      = vec::normalized(vec::vec3f(1, 1, 0));
     vec::vec3f normal = vec::vec3f(-1, 0, 0);
-    vec::vec3f b      = vec::reflect(a, normal);
 
+#ifdef GGMATH_DEBUG
+    ASSERT_THROW(vec::reflect(a, normal), std::invalid_argument);
+#else
+    vec::vec3f b = vec::reflect(a, normal);
     ASSERT_EQ(b, vec::normalized(vec::vec3f(-1, 1, 0)));
+#endif
 }
 TEST(Vec, ReflectPerpendicular)
 {

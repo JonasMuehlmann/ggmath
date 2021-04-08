@@ -4,8 +4,11 @@
 #include <array>
 #include <cmath>
 #include <initializer_list>
+#include <iostream>
 #include <numeric>
 #include <ostream>
+#include <sstream>
+#include <stdexcept>
 
 #include "concepts.hpp"
 
@@ -159,10 +162,29 @@
     ~vec() = default;                                                                                  \
                                                                                                        \
                                                                                                        \
-    /* endregion macros::other */                                                                      \
-                                                                                                       \
-                                                                                                       \
-    // endregion macros
+    /* endregion macros::other */
+
+
+// endregion macros
+
+
+// region forward_declarations
+
+
+// TODO: Check if these are really necessary
+namespace ggmath::vec
+{
+    template <typename T, int n>
+    struct vec;
+}    // namespace ggmath::vec
+namespace ggmath::debug
+{
+    template <typename T, int n>
+    void throw_if_not_unit(const ggmath::vec::vec<T, n>& vec);
+}    // namespace ggmath::debug
+
+
+// endregion forward_declarations
 
 
 namespace ggmath::vec
@@ -387,6 +409,10 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr bool parallel(const vec<T, n>& a, const vec<T, n>& b)
     {
+#ifdef GGMATH_DEBUG
+        ggmath::debug::check_unit_vector(a);
+        ggmath::debug::check_unit_vector(b);
+#endif
         return a * b == 1;
     }
 
@@ -394,6 +420,10 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr bool anti_parallel(const vec<T, n>& a, const vec<T, n>& b)
     {
+#ifdef GGMATH_DEBUG
+        ggmath::debug::check_unit_vector(a);
+        ggmath::debug::check_unit_vector(b);
+#endif
         return a * b == -1;
     }
 
@@ -401,6 +431,10 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr bool perpendicular(const vec<T, n>& a, const vec<T, n>& b)
     {
+#ifdef GGMATH_DEBUG
+        ggmath::debug::check_unit_vector(a);
+        ggmath::debug::check_unit_vector(b);
+#endif
         return std::abs(a * b) <= std::numeric_limits<float>::epsilon();
     }
 
@@ -458,6 +492,10 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr vec<T, n> reflect(const vec<T, n>& a, const vec<T, n>& normal)
     {
+#ifdef GGMATH_DEBUG
+        ggmath::debug::check_unit_vector(a);
+        ggmath::debug::check_unit_vector(normal);
+#endif
         return a - 2 * (a * normal) * normal;
     }
 
@@ -825,5 +863,26 @@ namespace ggmath::vec
     using vec4f  = vec<float, 4>;
     using color3 = vec<u_int8_t, 3>;
     using color4 = vec<u_int8_t, 4>;
-};        // namespace ggmath::vec
+};    // namespace ggmath::vec
+
+
+namespace ggmath::debug
+{
+    template <typename T, int n>
+    void throw_if_not_unit(const ggmath::vec::vec<T, n>& vec)
+    {
+        // TODO: Probably better to solve with with std::format
+        if (!ggmath::vec::is_unit_vector(vec))
+        {
+            std::stringstream ss;
+
+            ss << "Parameter was expected to be a unit vector"
+                  "(A vector with a length of 1). "
+                  "Instead, it had a length of "
+               << ggmath::vec::length(vec);
+
+            throw std::invalid_argument(ss.str());
+        }
+    }
+}    // namespace ggmath::debug
 #endif    // GG_MATH_VEC_HPP

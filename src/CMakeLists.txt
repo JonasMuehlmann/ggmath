@@ -5,13 +5,12 @@ set(CMAKE_CXX_STANDARD 20)
 
 include_directories(${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/src)
 
-set(SOURCE_FILES
-        vec.cpp
-        mat.cpp
-        )
-
 set(HEADER_FILES
         vec.hpp
         mat.hpp
         concepts.hpp)
-add_library(ggmath STATIC ${SOURCE_FILES} ${HEADER_FILES})
+
+add_library(ggmath STATIC ${HEADER_FILES})
+
+# target_compile_definitions(ggmath PUBLIC GGMATH_DEBUG)
+set_target_properties(ggmath PROPERTIES LINKER_LANGUAGE CXX)
