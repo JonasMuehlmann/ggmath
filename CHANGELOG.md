@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/JonasMuehlmann/ggmath/compare/v2.1.0...v2.2.0) (2021-04-08)
+
+
+### Features
+
+* **vec:** implement macro `GGMATH_DEBUG` which, when defined, enables strict checks ([702ceb9](https://github.com/JonasMuehlmann/ggmath/commit/702ceb9bcb223b59e5b09ce0ba1aeba040ee7c58))
+
 # [2.1.0](https://github.com/JonasMuehlmann/ggmath/compare/v2.0.0...v2.1.0) (2021-04-06)
 
 
