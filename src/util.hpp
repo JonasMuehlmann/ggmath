@@ -57,8 +57,6 @@ namespace ggmath
      * epsilon
      *
      * At least one parameter has to be a floating point value.
-     * If one of the parameters is a float, the return type is a float as well,
-     * otherwise it is a double.
      */
     template <ggmath::Scalar T, ggmath::Scalar U>
     requires ggmath::any_of_concept<std::is_floating_point, T, U>
