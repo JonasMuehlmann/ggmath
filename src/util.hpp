@@ -15,10 +15,14 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 #ifndef GG_MATH_UTIL_HPP
 #define GG_MATH_UTIL_HPP
+
+
 #include <numbers>
 #include <type_traits>
 
 #include "types.hpp"
+
+
 namespace ggmath
 {
     /**
@@ -44,6 +48,26 @@ namespace ggmath
     {
         // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
         return degrees * std::numbers::pi / 180;
+    }
+
+
+    // TODO: How about a version supporting parameter packs?
+    /**
+     * @brief Check if the absolute difference between the given values is less than
+     * epsilon
+     *
+     * At least one parameter has to be a floating point value.
+     * If one of the parameters is a float, the return type is a float as well,
+     * otherwise it is a double.
+     */
+    template <ggmath::Scalar T, ggmath::Scalar U>
+    requires ggmath::any_of_concept<std::is_floating_point, T, U>
+    constexpr bool difference_within_epsilon(T a, U b)
+    {
+        return std::abs(a - b) < std::numeric_limits<
+                   typename std::conditional<ggmath::any_of_type<float, T, U>,
+                                             float,
+                                             double>::type>::epsilon();
     }
 }    // namespace ggmath
 #endif    // GG_MATH_UTIL_HPP

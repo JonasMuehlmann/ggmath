@@ -485,7 +485,7 @@ namespace ggmath::vec
         ggmath::debug::throw_if_not_unit(a);
         ggmath::debug::throw_if_not_unit(b);
 #endif
-        return std::abs(a * b) <= std::numeric_limits<float>::epsilon();
+        return ggmath::difference_within_epsilon(a * b, 0);
     }
 
 
@@ -521,7 +521,7 @@ namespace ggmath::vec
     template <typename T, int n>
     constexpr bool is_unit_vector(const vec<T, n>& vec)
     {
-        return length(vec) == 1;
+        return ggmath::difference_within_epsilon(length(vec), 1);
     }
 
     /**
@@ -804,7 +804,7 @@ namespace ggmath::vec
     requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator==(
         const vec<T_Vec, n>& vec, T_Scalar scalar)
     {
-        return length(vec) == scalar;
+        return difference_within_epsilon(length(vec), scalar);
     }
 
 
