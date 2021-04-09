@@ -1,3 +1,18 @@
+# [2.3.0](https://github.com/JonasMuehlmann/ggmath/compare/v2.2.0...v2.3.0) (2021-04-09)
+
+
+### Bug Fixes
+
+* **vec:** fix rename of function `vec::debug::throw_if_not_unit()` ([65435a4](https://github.com/JonasMuehlmann/ggmath/commit/65435a4ef4c5b3f40b5cb2d6969655b3bc78ba58))
+
+
+### Features
+
+* **util:** implement radian/degrees conversion ([1abda9e](https://github.com/JonasMuehlmann/ggmath/commit/1abda9e7a4d9a251843dacadef61c22ecae3093e))
+* **vec:** implement `angle_between_unit()` ([0fe8599](https://github.com/JonasMuehlmann/ggmath/commit/0fe8599d6cc2263a42c71b0f8472d5f4c8a05a91))
+* **vec:** implement concepts for variadic concept/type checking ([0700b61](https://github.com/JonasMuehlmann/ggmath/commit/0700b61828aaceccd515c86d56970f993af95141))
+* **vec:** implement function for accurate comparison of floating point values ([ac103e3](https://github.com/JonasMuehlmann/ggmath/commit/ac103e360b6529dad8863833869327a6734e52cd))
+
 # [2.2.0](https://github.com/JonasMuehlmann/ggmath/compare/v2.1.0...v2.2.0) (2021-04-08)
 
 
