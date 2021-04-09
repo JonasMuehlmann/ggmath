@@ -499,6 +499,23 @@ namespace ggmath::vec
     }
 
     /**
+     * @brief Return the angle between the unit vectors*
+     *
+     * If the vectors have a length other than 1, the result will be incorrect.
+     * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
+     * NOT a unit-vector.
+     */
+    template <typename T, int n>
+    constexpr float angle_between_unit(const vec<T, n>& a, const vec<T, n>& b)
+    {
+#ifdef GGMATH_DEBUG
+        ggmath::debug::throw_if_not_unit(a);
+        ggmath::debug::throw_if_not_unit(b);
+#endif
+        return std::acos(a * b);
+    }
+
+    /**
      * @brief Check if the given vector has a length of 1
      */
     template <typename T, int n>

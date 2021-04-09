@@ -208,15 +208,10 @@ TEST(Vec, AntiParallelZero)
 
 TEST(Vec, PerpendicularAny)
 {
-    vec::vec3f a = vec::normalized(vec::vec3f(1, -2, 3));
-    vec::vec3f b = vec::normalized(vec::vec3f(5, 4, 1));
-
-#ifdef GGMATH_DEBUG
-    ASSERT_THROW(vec::perpendicular(a, b), std::invalid_argument);
-#else
-    bool is_perpendicular = vec::perpendicular(a, b);
+    vec::vec3f a                = vec::normalized(vec::vec3f(1, -2, 3));
+    vec::vec3f b                = vec::normalized(vec::vec3f(5, 4, 1));
+    bool       is_perpendicular = vec::perpendicular(a, b);
     ASSERT_EQ(is_perpendicular, true);
-#endif
 }
 TEST(Vec, PerpendicularAnyNot)
 {
@@ -269,6 +264,45 @@ TEST(Vec, AngleBetweenAntiParallel)
 
     ASSERT_FLOAT_EQ(vec::angle_between(a, b), std::numbers::pi);
 }
+
+
+TEST(Vec, AngleBetweenUnitAny)
+{
+    vec::vec3f a = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f b = vec::normalized(vec::vec3f(4, 3, 2));
+
+    ASSERT_FLOAT_EQ(vec::angle_between_unit(a, b), 0.531458);
+}
+TEST(Vec, AngleBetweenUnitPerpendicular)
+{
+    vec::vec3f a = vec::normalized(vec::vec3f(1, -2, 3));
+    vec::vec3f b = vec::normalized(vec::vec3f(5, 4, 1));
+
+    ASSERT_FLOAT_EQ(vec::angle_between_unit(a, b), 1.5707963);
+}
+TEST(Vec, AngleBetweenUnitParallel)
+{
+    vec::vec3f a = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f b = vec::normalized(vec::vec3f(4, 6, 8));
+
+    ASSERT_FLOAT_EQ(vec::angle_between_unit(a, b), 0);
+}
+TEST(Vec, AngleBetweenUnitAntiParallel)
+{
+    vec::vec3f a = vec::normalized(vec::vec3f(2, 3, 4));
+    vec::vec3f b = vec::normalized(vec::vec3f(-4, -6, -8));
+
+    ASSERT_FLOAT_EQ(vec::angle_between_unit(a, b), std::numbers::pi);
+}
+#ifdef GGMATH_DEBUG
+TEST(Vec, AngleBetweenUnitNotUnit)
+{
+    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec::vec3f b = vec::vec3f(-4, -6, -8);
+
+    ASSERT_THROW(vec::angle_between_unit(a, b), std::invalid_argument);
+}
+#endif
 
 
 TEST(Vec, IsUnitVectorAny)
@@ -366,17 +400,14 @@ TEST(Vec, LerpTOneFromZero)
     ASSERT_EQ(c, b);
 }
 
+
 TEST(Vec, ReflectAny)
 {
     vec::vec3f a      = vec::normalized(vec::vec3f(1, 1, 0));
     vec::vec3f normal = vec::vec3f(-1, 0, 0);
 
-#ifdef GGMATH_DEBUG
-    ASSERT_THROW(vec::reflect(a, normal), std::invalid_argument);
-#else
     vec::vec3f b = vec::reflect(a, normal);
     ASSERT_EQ(b, vec::normalized(vec::vec3f(-1, 1, 0)));
-#endif
 }
 TEST(Vec, ReflectPerpendicular)
 {
@@ -434,6 +465,7 @@ TEST(Vec, CrossProductSelf)
     ASSERT_EQ(cross_product, zero_vector);
 }
 
+
 TEST(Vec, DotProductAny)
 {
     vec::vec3f a           = vec::vec3f(2, 3, 4);
@@ -473,6 +505,7 @@ TEST(Vec, DotProductUnitPerpendicular)
 
     ASSERT_EQ(dot_product, 0);
 }
+
 
 TEST(Vec, Addition)
 {
