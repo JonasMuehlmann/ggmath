@@ -26,6 +26,7 @@
 #include <stdexcept>
 
 #include "types.hpp"
+#include "util.hpp"
 
 // region macros
 
@@ -813,7 +814,7 @@ namespace ggmath::vec
     requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator==(
         T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
-        return length(vec) == scalar;
+        return vec == scalar;
     }
 
 
@@ -829,7 +830,7 @@ namespace ggmath::vec
     requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator!=(
         T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
-        return length(vec) != scalar;
+        return vec != scalar;
     }
 
 
@@ -847,7 +848,7 @@ namespace ggmath::vec
     requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator>(
         T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
-        return length(vec) > scalar;
+        return vec > scalar;
     }
 
 
@@ -865,7 +866,7 @@ namespace ggmath::vec
     requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator<(
         T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
-        return length(vec) < scalar;
+        return vec < scalar;
     }
 
 
@@ -883,7 +884,7 @@ namespace ggmath::vec
     requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator>=(
         T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
-        return length(vec) >= scalar;
+        return vec >= scalar;
     }
 
 
@@ -901,7 +902,7 @@ namespace ggmath::vec
     requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator<=(
         T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
-        return length(vec) <= scalar;
+        return vec <= scalar;
     }
 
 
