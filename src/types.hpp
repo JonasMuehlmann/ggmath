@@ -22,6 +22,60 @@ namespace ggmath
     template <typename T>
     concept Scalar = std::is_scalar<T>::value;
 
+
+    /**
+     * Check if at least one of the listed types satisfies the given concept(first
+     * parameter)
+     *
+     * At least 1 type has to be passed after the concept.
+     */
+    template <template <typename> class Concept, typename... Types>
+    concept any_of_concept = requires(Types...)
+    {
+        sizeof...(Types) > 0;
+        (... || Concept<Types>::value);
+    };
+
+
+    /**
+     * Check if all of the given types support the concept(first parameter)
+     *
+     * At least 1 type has to be passed after the concept.
+     */
+    template <template <typename> class Concept, typename... Types>
+    concept all_of_concept = requires(Types...)
+    {
+        sizeof...(Types) > 0;
+        (... || Concept<Types>::value);
+    };
+
+
+    /**
+     * Check if at least one of the listed types is equal to the first one
+     *
+     * At least two types have to be passed.
+     */
+    template <typename T, typename... Types>
+    concept any_of_type = requires(Types...)
+    {
+        sizeof...(Types) > 0;
+        (... || std::is_same<T, Types>::value);
+    };
+
+
+    /**
+     * Check if all of the listed types are equal
+     *
+     * At least two types have to be passed.
+     */
+    template <typename T, typename... Types>
+    concept all_of_type = requires(Types...)
+    {
+        sizeof...(Types) > 0;
+        (... && std::is_same<T, Types>::value);
+    };
+
+
     template <typename T>
     using float_or_double =
         typename std::conditional<std::is_same<T, float>::value, float, double>::type;
