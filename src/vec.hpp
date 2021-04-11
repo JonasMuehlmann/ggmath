@@ -930,7 +930,7 @@ namespace ggmath::vec
 
 
     // Format: (data[0],data[2],...,data[n])
-    template <typename T, int n>
+    template <ggmath::NonCharacter T, int n>
     constexpr std::ostream& operator<<(std::ostream& os, const vec<T, n>& vec)
     {
         const auto last = std::end(vec) - 1;
@@ -940,6 +940,22 @@ namespace ggmath::vec
         std::for_each(
             std::begin(vec), last, [&os](T element) { os << element << ','; });
         os << *last;
+        os << ')';
+
+        return os;
+    }
+
+    template <ggmath::Character T, int n>
+    constexpr std::ostream& operator<<(std::ostream& os, const vec<T, n>& vec)
+    {
+        const auto last = std::end(vec) - 1;
+
+        os << '(';
+        // Loop ends before last
+        // unary + prints chars as numbers
+        std::for_each(
+            std::begin(vec), last, [&os](T element) { os << +element << ','; });
+        os << +*last;
         os << ')';
 
         return os;
