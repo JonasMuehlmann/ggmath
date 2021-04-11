@@ -19,10 +19,6 @@
 
 namespace ggmath
 {
-    template <typename T>
-    concept Scalar = std::is_scalar<T>::value;
-
-
     /**
      * Check if at least one of the listed types satisfies the given concept(first
      * parameter)
@@ -79,6 +75,17 @@ namespace ggmath
     template <typename T>
     using float_or_double =
         typename std::conditional<std::is_same<T, float>::value, float, double>::type;
+
+
+    template <typename T>
+    concept Scalar = std::is_scalar<T>::value;
+
+    template <typename T>
+    concept Character = ggmath::
+        any_of_type<T, char, unsigned char, char8_t, char16_t, char32_t, wchar_t>;
+
+    template <typename T>
+    concept NonCharacter = !Character<T>;
 }    // namespace ggmath
 
 #endif    // GG_MATH_TYPES_HPP
