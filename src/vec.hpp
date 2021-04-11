@@ -57,7 +57,10 @@
     constexpr vec(const vec&& other) noexcept : data(std::move(other.data)) {}                         \
                                                                                                        \
                                                                                                        \
-    constexpr vec(std::initializer_list<T> _data) : data(_data) {}                                     \
+    constexpr vec(std::initializer_list<T> _data)                                                      \
+    {                                                                                                  \
+        std::ranges::copy(_data, std::begin(data));                                                    \
+    }                                                                                                  \
                                                                                                        \
                                                                                                        \
     /* endregion macros::cnstructors */                                                                \
@@ -802,8 +805,8 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator==(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    requires std::equality_comparable_with<T_Vec, T_Scalar>
+    constexpr bool operator==(const vec<T_Vec, n>& vec, T_Scalar scalar)
     {
         return difference_within_epsilon(length(vec), scalar);
     }
@@ -811,8 +814,8 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator==(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    requires std::equality_comparable_with<T_Vec, T_Scalar>
+    constexpr bool operator==(T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
         return vec == scalar;
     }
@@ -820,15 +823,15 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator!=(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    requires std::equality_comparable_with<T_Vec, T_Scalar>
+    constexpr bool operator!=(const vec<T_Vec, n>& vec, T_Scalar scalar)
     {
         return length(vec) != scalar;
     }
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator!=(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    requires std::equality_comparable_with<T_Vec, T_Scalar>
+    constexpr bool operator!=(T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
         return vec != scalar;
     }
@@ -836,8 +839,8 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator>(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator>(const vec<T_Vec, n>& vec, T_Scalar scalar)
     {
         return length(vec) > scalar;
     }
@@ -845,8 +848,8 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator>(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator>(T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
         return vec > scalar;
     }
@@ -854,8 +857,8 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator<(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator<(const vec<T_Vec, n>& vec, T_Scalar scalar)
     {
         return length(vec) < scalar;
     }
@@ -863,8 +866,8 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator<(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator<(T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
         return vec < scalar;
     }
@@ -872,8 +875,8 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator>=(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator>=(const vec<T_Vec, n>& vec, T_Scalar scalar)
     {
         return length(vec) >= scalar;
     }
@@ -881,8 +884,8 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator>=(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator>=(T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
         return vec >= scalar;
     }
@@ -890,8 +893,8 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator<=(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator<=(const vec<T_Vec, n>& vec, T_Scalar scalar)
     {
         return length(vec) <= scalar;
     }
@@ -899,8 +902,8 @@ namespace ggmath::vec
 
     // Compare length
     template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator<=(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator<=(T_Scalar scalar, const vec<T_Vec, n>& vec)
     {
         return vec <= scalar;
     }
