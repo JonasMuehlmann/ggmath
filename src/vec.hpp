@@ -28,163 +28,206 @@
 #include "types.hpp"
 #include "util.hpp"
 
+
+// region forward_declarations
+
+
+// TODO: Check if these are really necessary
+namespace ggmath::vec
+{
+    template <ggmath::Scalar T, int n>
+    struct vec;
+}    // namespace ggmath::vec
+
+
+namespace ggmath::debug
+{
+    template <ggmath::Scalar T, int n>
+    void throw_if_not_unit(const ggmath::vec::vec<T, n>& vec);
+
+    void throw_if_not_equal_length(int n_A, int n_B);
+}    // namespace ggmath::debug
+
+
+// endregion forward_declarations
+
+
 // region macros
 
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage,-warnings-as-errors)
-#define COMMON_MEMBERS(n)                                                                              \
-                                                                                                       \
-                                                                                                       \
-    /* region macros::constructors */                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr explicit vec()                                                                           \
+#define COMMON_MEMBERS(n)                                                                                \
+                                                                                                         \
+                                                                                                         \
+    /* region macros::constructors */                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr explicit vec()                                                                             \
+    {                                                                                                    \
+        data.fill(0);                                                                                    \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    /*NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)*/   \
+    constexpr explicit vec(T(&_data)[n])                                                                 \
+    {                                                                                                    \
+        data = std::to_array(_data);                                                                     \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    /* overload and requires clause serves as an alternative for the impossible ifdef                    \
+     * inside a macro */                                                                                 \
+    /* clang-format off */                                                                             \
+    template <ggmath::Scalar T_In, int n_In>                                                           \
+    requires (GGMATH_ALLOW_SIZE_MISMATCH == 1)                                                         \
+    constexpr vec(const vec<T_In, n_In>& other)                                                        \
     {                                                                                                  \
-        data.fill(0);                                                                                  \
+        std::copy_n(std::begin(other), std::min(n, n_In), std::begin(data));                           \
+        /* fill remaining values */                                                                    \
+        std::fill_n(std::begin(data) + std::min(n, n_In), n - n_In , 0);                               \
     }                                                                                                  \
                                                                                                        \
-                                                                                                       \
-    /*NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays,modernize-avoid-c-arrays)*/ \
-    constexpr explicit vec(T(&_data)[n])                                                               \
+    template <ggmath::Scalar T_In, int n_In>                                                           \
+    requires (GGMATH_ALLOW_SIZE_MISMATCH == 0)                                                         \
+constexpr vec(const vec<T_In, n_In>& other)                                                            \
     {                                                                                                  \
-        data = std::to_array(_data);                                                                   \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr vec(const vec& other) : data(other.data) {}                                              \
-                                                                                                       \
-                                                                                                       \
-    constexpr vec(const vec&& other) noexcept : data(std::move(other.data)) {}                         \
-                                                                                                       \
-                                                                                                       \
-    constexpr vec(std::initializer_list<T> _data)                                                      \
-    {                                                                                                  \
-        std::ranges::copy(_data, std::begin(data));                                                    \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    /* endregion macros::cnstructors */                                                                \
-                                                                                                       \
-                                                                                                       \
-    /* region macros::ierators */                                                                      \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto begin() noexcept                                                                    \
-    {                                                                                                  \
-        return data.begin();                                                                           \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto begin() const noexcept                                                              \
-    {                                                                                                  \
-        return data.begin();                                                                           \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto end() noexcept                                                                      \
-    {                                                                                                  \
-        return data.end();                                                                             \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto end() const noexcept                                                                \
-    {                                                                                                  \
-        return data.end();                                                                             \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto cbegin() const noexcept                                                             \
-    {                                                                                                  \
-        return data.cbegin();                                                                          \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto cend() const noexcept                                                               \
-    {                                                                                                  \
-        return data.cend();                                                                            \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto rbegin() noexcept                                                                   \
-    {                                                                                                  \
-        return data.rbegin();                                                                          \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto rbegin() const noexcept                                                             \
-    {                                                                                                  \
-        return data.rbegin();                                                                          \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto rend() noexcept                                                                     \
-    {                                                                                                  \
-        return data.rend();                                                                            \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto rend() const noexcept                                                               \
-    {                                                                                                  \
-        return data.rend();                                                                            \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto crbegin() const noexcept                                                            \
-    {                                                                                                  \
-        return data.crbegin();                                                                         \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr auto crend() const noexcept                                                              \
-    {                                                                                                  \
-        return data.crend();                                                                           \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    /* endregion macros::iterators */                                                                  \
-                                                                                                       \
-                                                                                                       \
-    /* region macros::other */                                                                         \
-                                                                                                       \
-                                                                                                       \
-    constexpr vec& operator=(const vec& other)                                                         \
-    {                                                                                                  \
-        if (this == &other)                                                                            \
-            return *this;                                                                              \
-                                                                                                       \
-        data = other;                                                                                  \
-        return *this;                                                                                  \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr vec& operator=(vec&& other) noexcept                                                     \
-    {                                                                                                  \
-        if (this == &other)                                                                            \
-            return *this;                                                                              \
-                                                                                                       \
-        data = std::move(other);                                                                       \
-        return *this;                                                                                  \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr T& operator[](size_t i)                                                                  \
-    {                                                                                                  \
-        return data[i];                                                                                \
-    }                                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    constexpr const T& operator[](size_t i) const                                                      \
-    {                                                                                                  \
-        return data[i];                                                                                \
-    }                                                                                                  \
-                                                                                                       \
-    ~vec() = default;                                                                                  \
-                                                                                                       \
-                                                                                                       \
-    /* endregion macros::other */
-
-
-// endregion macros
+        ggmath::debug::throw_if_not_equal_length(n_In, n);                                             \
+        std::ranges::copy(other, std::begin(data));                                                    \
+    } \
+    /* clang-format on */                                                                                \
+                                                                                                         \
+                                                                                                         \
+    constexpr vec(const vec&& other) noexcept : data(std::move(other.data)) {}                           \
+                                                                                                         \
+                                                                                                         \
+    constexpr vec(std::initializer_list<T> _data)                                                        \
+    {                                                                                                    \
+        std::ranges::copy(_data, std::begin(data));                                                      \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    /* endregion macros::cnstructors */                                                                  \
+                                                                                                         \
+                                                                                                         \
+    /* region macros::ierators */                                                                        \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto begin() noexcept                                                                      \
+    {                                                                                                    \
+        return data.begin();                                                                             \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto begin() const noexcept                                                                \
+    {                                                                                                    \
+        return data.begin();                                                                             \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto end() noexcept                                                                        \
+    {                                                                                                    \
+        return data.end();                                                                               \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto end() const noexcept                                                                  \
+    {                                                                                                    \
+        return data.end();                                                                               \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto cbegin() const noexcept                                                               \
+    {                                                                                                    \
+        return data.cbegin();                                                                            \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto cend() const noexcept                                                                 \
+    {                                                                                                    \
+        return data.cend();                                                                              \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto rbegin() noexcept                                                                     \
+    {                                                                                                    \
+        return data.rbegin();                                                                            \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto rbegin() const noexcept                                                               \
+    {                                                                                                    \
+        return data.rbegin();                                                                            \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto rend() noexcept                                                                       \
+    {                                                                                                    \
+        return data.rend();                                                                              \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto rend() const noexcept                                                                 \
+    {                                                                                                    \
+        return data.rend();                                                                              \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto crbegin() const noexcept                                                              \
+    {                                                                                                    \
+        return data.crbegin();                                                                           \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr auto crend() const noexcept                                                                \
+    {                                                                                                    \
+        return data.crend();                                                                             \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    /* endregion macros::iterators */                                                                    \
+                                                                                                         \
+                                                                                                         \
+    /* region macros::other */                                                                           \
+                                                                                                         \
+                                                                                                         \
+    constexpr vec& operator=(const vec& other)                                                           \
+    {                                                                                                    \
+        if (this == &other)                                                                              \
+            return *this;                                                                                \
+                                                                                                         \
+        data = other;                                                                                    \
+        return *this;                                                                                    \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr vec& operator=(vec&& other) noexcept                                                       \
+    {                                                                                                    \
+        if (this == &other)                                                                              \
+            return *this;                                                                                \
+                                                                                                         \
+        data = std::move(other);                                                                         \
+        return *this;                                                                                    \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr T& operator[](size_t i)                                                                    \
+    {                                                                                                    \
+        return data[i];                                                                                  \
+    }                                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    constexpr const T& operator[](size_t i) const                                                        \
+    {                                                                                                    \
+        return data[i];                                                                                  \
+    }                                                                                                    \
+                                                                                                         \
+    ~vec() = default;                                                                                    \
+                                                                                                         \
+                                                                                                         \
+    /* endregion macros::other */                                                                        \
+                                                                                                         \
+                                                                                                         \
+    // endregion macros
 
 
 // region forward_declarations

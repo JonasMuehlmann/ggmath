@@ -17,5 +17,5 @@ set(HEADER_FILES
 
 add_library(ggmath STATIC ${HEADER_FILES})
 
-# target_compile_definitions(ggmath PUBLIC GGMATH_DEBUG)
+target_compile_definitions(ggmath PUBLIC GGMATH_DEBUG=0 GGMATH_ALLOW_SIZE_MISMATCH=1)
 set_target_properties(ggmath PROPERTIES LINKER_LANGUAGE CXX)

@@ -22,10 +22,12 @@ The code is tested for clang 11 and gcc 10, at least clang 11 or gcc 10 are requ
 
 The sources compile into a static library, which you can link against your project.
 
-The following macros can be defined when compiling:
+The following boolean macros are used when compiling:
 
-- GGMATH_DEBUG: Enables strict checks for debugging purposes(e.g. Throwing an exception when a function requiring a
-  unit-vector does not receive one).
+- `GGMATH_DEBUG=0`: When set to `1`, enables strict checks for debugging purposes(e.g. Throwing an exception when a
+  function requiring a unit-vector does not receive one)
+- `GGMATH_ALLOW_SIZE_MISMATCH=0`: When set to `1`, allows copy construction from a vector of different length and set
+  missing values to 0
 
 ## Contributing
 
