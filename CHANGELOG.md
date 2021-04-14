@@ -1,3 +1,18 @@
+# [2.4.0](https://github.com/JonasMuehlmann/ggmath/compare/v2.3.0...v2.4.0) (2021-04-14)
+
+
+### Bug Fixes
+
+* **vec:** fix clang error from using `auto` as template parameter ([9c45b6d](https://github.com/JonasMuehlmann/ggmath/commit/9c45b6d052fb6c8c3838a1a224d7eadf9cb4cd6c))
+* **vec:** fix constructor with initializer list ([27e302d](https://github.com/JonasMuehlmann/ggmath/commit/27e302de5edea03604c84b1f5bde8de7657dbe8e))
+* **vec:** fix stream output for vector of character types ([9826c68](https://github.com/JonasMuehlmann/ggmath/commit/9826c68c9ab2dbdd073d781297743f357b85b716))
+
+
+### Features
+
+* **types:** implement concepts  for (non)character types ([66fcfde](https://github.com/JonasMuehlmann/ggmath/commit/66fcfdebdabc27c28c8372c920e4b0974086aed9))
+* **vec:** allow copy-construction from different type/length vector ([31201f6](https://github.com/JonasMuehlmann/ggmath/commit/31201f637aa59b41ea8ddd042ba1383e576167cf))
+
 # [2.3.0](https://github.com/JonasMuehlmann/ggmath/compare/v2.2.0...v2.3.0) (2021-04-09)
 
 
