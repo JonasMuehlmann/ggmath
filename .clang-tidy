@@ -15,7 +15,9 @@ Checks: '*,
 -llvm-qualified-auto,
 -readability-qualified-auto,
 -cppcoreguidelines-pro-bounds-constant-array-index,
--google-build-using-namespace'
+-google-build-using-namespace,
+-cppcoreguidelines-special-member-functions,
+-hicpp-special-member-functions'
 
 
 WarningsAsErrors: '*'
