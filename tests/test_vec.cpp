@@ -3,6 +3,7 @@
 #include <numbers>
 
 #include "vec.hpp"
+
 using namespace ggmath;
 
 
@@ -11,166 +12,166 @@ using namespace ggmath;
 
 TEST(Vec, LengthAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
-    ASSERT_FLOAT_EQ(vec::length(a), 5.3851647);
+    ASSERT_FLOAT_EQ(vector::length(a), 5.3851647);
 }
 TEST(Vec, LengthZero)
 {
-    vec::vec3f zero_vector = vec::vec3f();
+    vec3f zero_vector = vec3f();
 
-    ASSERT_EQ(vec::length(zero_vector), 0);
+    ASSERT_EQ(vector::length(zero_vector), 0);
 }
 TEST(Vec, LengthNegative)
 {
-    vec::vec3f zero_vector = vec::vec3f(-2, -3, -4);
+    vec3f zero_vector = vec3f(-2, -3, -4);
 
-    ASSERT_FLOAT_EQ(vec::length(zero_vector), 5.3851647);
+    ASSERT_FLOAT_EQ(vector::length(zero_vector), 5.3851647);
 }
 
 
 TEST(Vec, LengthSquaredAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
-    ASSERT_EQ(vec::length_squared(a), 29);
+    ASSERT_EQ(vector::length_squared(a), 29);
 }
 TEST(Vec, LengthSquaredZero)
 {
-    vec::vec3f zero_vector = vec::vec3f();
+    vec3f zero_vector = vec3f();
 
-    ASSERT_EQ(vec::length_squared(zero_vector), 0);
+    ASSERT_EQ(vector::length_squared(zero_vector), 0);
 }
 TEST(Vec, LengthSquaredNegative)
 {
-    vec::vec3f a = vec::vec3f(-2, -3, -4);
+    vec3f a = vec3f(-2, -3, -4);
 
-    ASSERT_EQ(vec::length_squared(a), 29);
+    ASSERT_EQ(vector::length_squared(a), 29);
 }
 
 
 TEST(Vec, NormalizedAny)
 {
-    vec::vec3f a          = vec::vec3f(2, 3, 4);
-    vec::vec3f normalized = vec::normalized(a);
+    vec3f a          = vec3f(2, 3, 4);
+    vec3f normalized = vector::normalized(a);
 
-    ASSERT_FLOAT_EQ(length(normalized), 1);
+    ASSERT_FLOAT_EQ(vector::length(normalized), 1);
 }
 TEST(Vec, NormalizedZero)
 {
-    vec::vec3f a          = vec::vec3f(0, 0, 0);
-    vec::vec3f normalized = vec::normalized(a);
+    vec3f a          = vec3f(0, 0, 0);
+    vec3f normalized = vector::normalized(a);
 
-    ASSERT_EQ(isnanf(length(normalized)), true);
+    ASSERT_EQ(isnanf(vector::length(normalized)), true);
 }
 TEST(Vec, NormalizedNegative)
 {
-    vec::vec3f a          = vec::vec3f(-2, -3, -4);
-    vec::vec3f normalized = vec::normalized(a);
+    vec3f a          = vec3f(-2, -3, -4);
+    vec3f normalized = vector::normalized(a);
 
-    ASSERT_FLOAT_EQ(length(normalized), 1);
+    ASSERT_FLOAT_EQ(vector::length(normalized), 1);
 }
 
 
 TEST(Vec, ScaledByAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::scaled_by(a, 2);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vector::scaled_by(a, 2);
 
-    ASSERT_FLOAT_EQ(vec::length(b), 10.770329);
+    ASSERT_FLOAT_EQ(vector::length(b), 10.770329);
 }
 TEST(Vec, ScaledByZeroFactor)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::scaled_by(a, 0);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vector::scaled_by(a, 0);
 
-    ASSERT_FLOAT_EQ(vec::length(b), 0);
+    ASSERT_FLOAT_EQ(vector::length(b), 0);
 }
 TEST(Vec, ScaledByZeroVector)
 {
-    vec::vec3f a = vec::vec3f(0, 0, 0);
-    vec::vec3f b = vec::scaled_by(a, 2);
+    vec3f a = vec3f(0, 0, 0);
+    vec3f b = vector::scaled_by(a, 2);
 
-    ASSERT_FLOAT_EQ(vec::length(b), 0);
+    ASSERT_FLOAT_EQ(vector::length(b), 0);
 }
 
 
 TEST(Vec, ScaledToAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::scaled_to(a, 2);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vector::scaled_to(a, 2);
 
-    ASSERT_FLOAT_EQ(vec::length(b), 2);
+    ASSERT_FLOAT_EQ(vector::length(b), 2);
 }
 TEST(Vec, ScaledToZeroScalar)
 {
-    vec::vec3f a = vec::vec3f();
-    vec::vec3f b = vec::scaled_to(a, 0);
+    vec3f a = vec3f();
+    vec3f b = vector::scaled_to(a, 0);
 
-    ASSERT_FLOAT_EQ(vec::length(b), 0);
+    ASSERT_FLOAT_EQ(vector::length(b), 0);
 }
 TEST(Vec, ScaledToZeroVector)
 {
-    vec::vec3f a = vec::vec3f();
-    vec::vec3f b = vec::scaled_to(a, 2);
+    vec3f a = vec3f();
+    vec3f b = vector::scaled_to(a, 2);
 
-    ASSERT_FLOAT_EQ(vec::length(b), 0);
+    ASSERT_FLOAT_EQ(vector::length(b), 0);
 }
 
 
 TEST(Vec, DistanceAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(5, 6, 7);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(5, 6, 7);
 
-    ASSERT_FLOAT_EQ(vec::distance(a, b), 5.196152);
+    ASSERT_FLOAT_EQ(vector::distance(a, b), 5.196152);
 }
 TEST(Vec, DistanceCompareWithReversed)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(5, 6, 7);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(5, 6, 7);
 
-    ASSERT_FLOAT_EQ(vec::distance(b, a), vec::distance(a, b));
+    ASSERT_FLOAT_EQ(vector::distance(b, a), vector::distance(a, b));
 }
 TEST(Vec, DistanceSelf)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
-    ASSERT_FLOAT_EQ(vec::distance(a, a), 0);
+    ASSERT_FLOAT_EQ(vector::distance(a, a), 0);
 }
 TEST(Vec, DistanceFromOrigin)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
-    ASSERT_FLOAT_EQ(vec::distance(vec::vec3f(), a), vec::length(a));
+    ASSERT_FLOAT_EQ(vector::distance(vec3f(), a), vector::length(a));
 }
 
 
 TEST(Vec, ParallelAny)
 {
-    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b           = vec::normalized(vec::vec3f(4, 6, 8));
-    bool       is_parallel = vec::parallel(a, b);
+    vec3f a           = vector::normalized(vec3f(2, 3, 4));
+    vec3f b           = vector::normalized(vec3f(4, 6, 8));
+    bool  is_parallel = vector::parallel(a, b);
 
     ASSERT_EQ(is_parallel, true);
 }
 TEST(Vec, ParallelAnyNot)
 {
-    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b           = vec::normalized(vec::vec3f(4, 6, 7));
-    bool       is_parallel = vec::parallel(a, b);
+    vec3f a           = vector::normalized(vec3f(2, 3, 4));
+    vec3f b           = vector::normalized(vec3f(4, 6, 7));
+    bool  is_parallel = vector::parallel(a, b);
 
     ASSERT_EQ(is_parallel, false);
 }
 TEST(Vec, ParallelZero)
 {
-    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f zero_vector = vec::vec3f();
+    vec3f a           = vector::normalized(vec3f(2, 3, 4));
+    vec3f zero_vector = vec3f();
 
 #ifdef GGMATH_DEBUG
-    ASSERT_THROW(vec::parallel(a, zero_vector), std::invalid_argument);
+    ASSERT_THROW(vector::parallel(a, zero_vector), std::invalid_argument);
 #else
-    bool is_parallel = vec::parallel(a, zero_vector);
+    bool is_parallel = vector::parallel(a, zero_vector);
     ASSERT_EQ(is_parallel, false);
 #endif
 }
@@ -178,29 +179,29 @@ TEST(Vec, ParallelZero)
 
 TEST(Vec, AntiParallelAny)
 {
-    vec::vec3f a                = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b                = vec::normalized(vec::vec3f(-4, -6, -8));
-    bool       is_anti_parallel = vec::anti_parallel(a, b);
+    vec3f a                = vector::normalized(vec3f(2, 3, 4));
+    vec3f b                = vector::normalized(vec3f(-4, -6, -8));
+    bool  is_anti_parallel = vector::anti_parallel(a, b);
 
     ASSERT_EQ(is_anti_parallel, true);
 }
 TEST(Vec, AntiParallelAnyNot)
 {
-    vec::vec3f a                = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b                = vec::normalized(vec::vec3f(4, 6, 7));
-    bool       is_anti_parallel = vec::anti_parallel(a, b);
+    vec3f a                = vector::normalized(vec3f(2, 3, 4));
+    vec3f b                = vector::normalized(vec3f(4, 6, 7));
+    bool  is_anti_parallel = vector::anti_parallel(a, b);
 
     ASSERT_EQ(is_anti_parallel, false);
 }
 TEST(Vec, AntiParallelZero)
 {
-    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f zero_vector = vec::vec3f();
+    vec3f a           = vector::normalized(vec3f(2, 3, 4));
+    vec3f zero_vector = vec3f();
 
 #ifdef GGMATH_DEBUG
-    ASSERT_THROW(anti_parallel(a, zero_vector), std::invalid_argument);
+    ASSERT_THROW(vector::anti_parallel(a, zero_vector), std::invalid_argument);
 #else
-    bool is_anti_parallel = vec::anti_parallel(a, zero_vector);
+    bool is_anti_parallel = vector::anti_parallel(a, zero_vector);
     ASSERT_EQ(is_anti_parallel, false);
 #endif
 }
@@ -208,28 +209,28 @@ TEST(Vec, AntiParallelZero)
 
 TEST(Vec, PerpendicularAny)
 {
-    vec::vec3f a                = vec::normalized(vec::vec3f(1, -2, 3));
-    vec::vec3f b                = vec::normalized(vec::vec3f(5, 4, 1));
-    bool       is_perpendicular = vec::perpendicular(a, b);
+    vec3f a                = vector::normalized(vec3f(1, -2, 3));
+    vec3f b                = vector::normalized(vec3f(5, 4, 1));
+    bool  is_perpendicular = vector::perpendicular(a, b);
     ASSERT_EQ(is_perpendicular, true);
 }
 TEST(Vec, PerpendicularAnyNot)
 {
-    vec::vec3f a                = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b                = vec::normalized(vec::vec3f(5, 6, 7));
-    bool       is_perpendicular = vec::perpendicular(a, b);
+    vec3f a                = vector::normalized(vec3f(2, 3, 4));
+    vec3f b                = vector::normalized(vec3f(5, 6, 7));
+    bool  is_perpendicular = vector::perpendicular(a, b);
 
     ASSERT_EQ(is_perpendicular, false);
 }
 TEST(Vec, PerpendicularZero)
 {
-    vec::vec3f a           = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f zero_vector = vec::vec3f();
+    vec3f a           = vector::normalized(vec3f(2, 3, 4));
+    vec3f zero_vector = vec3f();
 
 #ifdef GGMATH_DEBUG
-    ASSERT_THROW(vec::perpendicular(a, zero_vector), std::invalid_argument);
+    ASSERT_THROW(vector::perpendicular(a, zero_vector), std::invalid_argument);
 #else
-    bool is_perpendicular = vec::perpendicular(a, zero_vector);
+    bool is_perpendicular = vector::perpendicular(a, zero_vector);
     ASSERT_EQ(is_perpendicular, true);
 #endif
 }
@@ -237,165 +238,165 @@ TEST(Vec, PerpendicularZero)
 
 TEST(Vec, AngleBetweenAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(4, 3, 2);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(4, 3, 2);
 
-    ASSERT_FLOAT_EQ(vec::angle_between(a, b), 0.531458);
+    ASSERT_FLOAT_EQ(vector::angle_between(a, b), 0.531458);
 }
 TEST(Vec, AngleBetweenPerpendicular)
 {
-    vec::vec3f a = vec::normalized(vec::vec3f(1, -2, 3));
-    vec::vec3f b = vec::normalized(vec::vec3f(5, 4, 1));
+    vec3f a = vector::normalized(vec3f(1, -2, 3));
+    vec3f b = vector::normalized(vec3f(5, 4, 1));
 
 
-    ASSERT_FLOAT_EQ(vec::angle_between(a, b), 1.5707963);
+    ASSERT_FLOAT_EQ(vector::angle_between(a, b), 1.5707963);
 }
 TEST(Vec, AngleBetweenParallel)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(4, 6, 8);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(4, 6, 8);
 
-    ASSERT_FLOAT_EQ(vec::angle_between(a, b), 0);
+    ASSERT_FLOAT_EQ(vector::angle_between(a, b), 0);
 }
 TEST(Vec, AngleBetweenAntiParallel)
 {
-    vec::vec3f a = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b = vec::normalized(vec::vec3f(-4, -6, -8));
+    vec3f a = vector::normalized(vec3f(2, 3, 4));
+    vec3f b = vector::normalized(vec3f(-4, -6, -8));
 
-    ASSERT_FLOAT_EQ(vec::angle_between(a, b), std::numbers::pi);
+    ASSERT_FLOAT_EQ(vector::angle_between(a, b), std::numbers::pi);
 }
 
 
 TEST(Vec, AngleBetweenUnitAny)
 {
-    vec::vec3f a = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b = vec::normalized(vec::vec3f(4, 3, 2));
+    vec3f a = vector::normalized(vec3f(2, 3, 4));
+    vec3f b = vector::normalized(vec3f(4, 3, 2));
 
-    ASSERT_FLOAT_EQ(vec::angle_between_unit(a, b), 0.531458);
+    ASSERT_FLOAT_EQ(vector::angle_between_unit(a, b), 0.531458);
 }
 TEST(Vec, AngleBetweenUnitPerpendicular)
 {
-    vec::vec3f a = vec::normalized(vec::vec3f(1, -2, 3));
-    vec::vec3f b = vec::normalized(vec::vec3f(5, 4, 1));
+    vec3f a = vector::normalized(vec3f(1, -2, 3));
+    vec3f b = vector::normalized(vec3f(5, 4, 1));
 
-    ASSERT_FLOAT_EQ(vec::angle_between_unit(a, b), 1.5707963);
+    ASSERT_FLOAT_EQ(vector::angle_between_unit(a, b), 1.5707963);
 }
 TEST(Vec, AngleBetweenUnitParallel)
 {
-    vec::vec3f a = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b = vec::normalized(vec::vec3f(4, 6, 8));
+    vec3f a = vector::normalized(vec3f(2, 3, 4));
+    vec3f b = vector::normalized(vec3f(4, 6, 8));
 
-    ASSERT_FLOAT_EQ(vec::angle_between_unit(a, b), 0);
+    ASSERT_FLOAT_EQ(vector::angle_between_unit(a, b), 0);
 }
 TEST(Vec, AngleBetweenUnitAntiParallel)
 {
-    vec::vec3f a = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f b = vec::normalized(vec::vec3f(-4, -6, -8));
+    vec3f a = vector::normalized(vec3f(2, 3, 4));
+    vec3f b = vector::normalized(vec3f(-4, -6, -8));
 
-    ASSERT_FLOAT_EQ(vec::angle_between_unit(a, b), std::numbers::pi);
+    ASSERT_FLOAT_EQ(vector::angle_between_unit(a, b), std::numbers::pi);
 }
 #ifdef GGMATH_DEBUG
 TEST(Vec, AngleBetweenUnitNotUnit)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(-4, -6, -8);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(-4, -6, -8);
 
-    ASSERT_THROW(vec::angle_between_unit(a, b), std::invalid_argument);
+    ASSERT_THROW(vector::angle_between_unit(a, b), std::invalid_argument);
 }
 #endif
 
 
 TEST(Vec, IsUnitVectorAny)
 {
-    vec::vec3f a = vec::normalized(vec::vec3f(2, 3, 4));
-    ASSERT_EQ(vec::is_unit_vector(a), true);
+    vec3f a = vector::normalized(vec3f(2, 3, 4));
+    ASSERT_EQ(vector::is_unit_vector(a), true);
 }
 TEST(Vec, IsUnitVectorAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    ASSERT_EQ(vec::is_unit_vector(a), false);
+    vec3f a = vec3f(2, 3, 4);
+    ASSERT_EQ(vector::is_unit_vector(a), false);
 }
 TEST(Vec, IsUnitVectorZero)
 {
-    vec::vec3f a = vec::normalized(vec::vec3f());
-    ASSERT_EQ(vec::is_unit_vector(a), false);
+    vec3f a = vector::normalized(vec3f());
+    ASSERT_EQ(vector::is_unit_vector(a), false);
 }
 
 
 TEST(Vec, MinAny)
 {
-    vec::vec3f a = vec::vec3f(4, 3, 2);
+    vec3f a = vec3f(4, 3, 2);
 
-    ASSERT_EQ(vec::min(a), 2);
+    ASSERT_EQ(vector::min(a), 2);
 }
 
 
 TEST(Vec, MaxAny)
 {
-    vec::vec3f a = vec::vec3f(4, 3, 2);
+    vec3f a = vec3f(4, 3, 2);
 
-    ASSERT_EQ(vec::max(a), 4);
+    ASSERT_EQ(vector::max(a), 4);
 }
 
 
 TEST(Vec, IndexMinAny)
 {
-    vec::vec3f a = vec::vec3f(4, 3, 2);
+    vec3f a = vec3f(4, 3, 2);
 
-    ASSERT_EQ(vec::index_min(a), 2);
+    ASSERT_EQ(vector::index_min(a), 2);
 }
 
 
 TEST(Vec, IndexMaxAny)
 {
-    vec::vec3f a = vec::vec3f(4, 3, 2);
+    vec3f a = vec3f(4, 3, 2);
 
-    ASSERT_EQ(vec::index_max(a), 0);
+    ASSERT_EQ(vector::index_max(a), 0);
 }
 
 
 TEST(Vec, LerpAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 6, 10);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 6, 10);
 
-    vec::vec3f c = vec::lerp(a, b, 0.3);
+    vec3f c = vector::lerp(a, b, 0.3);
 
-    ASSERT_EQ(c, vec::vec3f(2, 3.9, 5.8));
+    ASSERT_EQ(c, vec3f(2, 3.9, 5.8));
 }
 TEST(Vec, LerpTZero)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 6, 10);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 6, 10);
 
-    vec::vec3f c = vec::lerp(a, b, 0);
+    vec3f c = vector::lerp(a, b, 0);
 
     ASSERT_EQ(c, a);
 }
 TEST(Vec, LerpTOne)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 6, 10);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 6, 10);
 
-    vec::vec3f c = vec::lerp(a, b, 1);
+    vec3f c = vector::lerp(a, b, 1);
 
     ASSERT_EQ(c, b);
 }
 TEST(Vec, LerpTZeroFromZero)
 {
-    vec::vec3f a = vec::vec3f();
-    vec::vec3f b = vec::vec3f(2, 6, 10);
+    vec3f a = vec3f();
+    vec3f b = vec3f(2, 6, 10);
 
-    vec::vec3f c = vec::lerp(a, b, 0);
+    vec3f c = vector::lerp(a, b, 0);
 
     ASSERT_EQ(c, a);
 }
 TEST(Vec, LerpTOneFromZero)
 {
-    vec::vec3f a = vec::vec3f();
-    vec::vec3f b = vec::vec3f(2, 6, 10);
+    vec3f a = vec3f();
+    vec3f b = vec3f(2, 6, 10);
 
-    vec::vec3f c = vec::lerp(a, b, 1);
+    vec3f c = vector::lerp(a, b, 1);
 
     ASSERT_EQ(c, b);
 }
@@ -403,33 +404,33 @@ TEST(Vec, LerpTOneFromZero)
 
 TEST(Vec, ReflectAny)
 {
-    vec::vec3f a      = vec::normalized(vec::vec3f(1, 1, 0));
-    vec::vec3f normal = vec::vec3f(-1, 0, 0);
+    vec3f a      = vector::normalized(vec3f(1, 1, 0));
+    vec3f normal = vec3f(-1, 0, 0);
 
-    vec::vec3f b = vec::reflect(a, normal);
-    ASSERT_EQ(b, vec::normalized(vec::vec3f(-1, 1, 0)));
+    vec3f b = vector::reflect(a, normal);
+    ASSERT_EQ(b, vector::normalized(vec3f(-1, 1, 0)));
 }
 TEST(Vec, ReflectPerpendicular)
 {
-    vec::vec3f a      = vec::vec3f(0, 0, 1);
-    vec::vec3f normal = vec::vec3f(-1, 0, 0);
-    vec::vec3f b      = vec::reflect(a, normal);
+    vec3f a      = vec3f(0, 0, 1);
+    vec3f normal = vec3f(-1, 0, 0);
+    vec3f b      = vector::reflect(a, normal);
 
     ASSERT_EQ(b, a);
 }
 TEST(Vec, ReflectAntiParallel)
 {
-    vec::vec3f a      = vec::vec3f(1, 0, 0);
-    vec::vec3f normal = vec::vec3f(-1, 0, 0);
-    vec::vec3f b      = vec::reflect(a, normal);
+    vec3f a      = vec3f(1, 0, 0);
+    vec3f normal = vec3f(-1, 0, 0);
+    vec3f b      = vector::reflect(a, normal);
 
-    ASSERT_EQ(b, vec::vec3f(-1, 0, 0));
+    ASSERT_EQ(b, vec3f(-1, 0, 0));
 }
 TEST(Vec, ReflectParallel)
 {
-    vec::vec3f a      = vec::normalized(vec::vec3f(2, 3, 4));
-    vec::vec3f normal = vec::vec3f(-1, 0, 0);
-    vec::vec3f b      = vec::reflect(a, normal);
+    vec3f a      = vector::normalized(vec3f(2, 3, 4));
+    vec3f normal = vec3f(-1, 0, 0);
+    vec3f b      = vector::reflect(a, normal);
 
     ASSERT_EQ(b, b);
 }
@@ -449,18 +450,18 @@ TEST(Vec, ReflectParallel)
 
 TEST(Vec, CrossProductAny)
 {
-    vec::vec3f a             = vec::vec3f(2, 3, 4);
-    vec::vec3f b             = vec::vec3f(5, 6, 7);
-    vec::vec3f cross_product = a % b;
+    vec3f a             = vec3f(2, 3, 4);
+    vec3f b             = vec3f(5, 6, 7);
+    vec3f cross_product = a % b;
 
-    ASSERT_EQ(cross_product, vec::vec3f(-3, 6, -3));
+    ASSERT_EQ(cross_product, vec3f(-3, 6, -3));
 }
 TEST(Vec, CrossProductSelf)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
     // NOLINTNEXTLINE(misc-redundant-expression)
-    vec::vec3f cross_product = a % a;
-    vec::vec3f zero_vector   = vec::vec3f();
+    vec3f cross_product = a % a;
+    vec3f zero_vector   = vec3f();
 
     ASSERT_EQ(cross_product, zero_vector);
 }
@@ -468,40 +469,40 @@ TEST(Vec, CrossProductSelf)
 
 TEST(Vec, DotProductAny)
 {
-    vec::vec3f a           = vec::vec3f(2, 3, 4);
-    vec::vec3f b           = vec::vec3f(5, 6, 7);
-    float      dot_product = a * b;
+    vec3f a           = vec3f(2, 3, 4);
+    vec3f b           = vec3f(5, 6, 7);
+    float dot_product = a * b;
 
     ASSERT_EQ(dot_product, 56);
 }
 TEST(Vec, DotProductSelf)
 {
-    vec::vec3f a              = vec::vec3f(2, 3, 4);
-    float      dot_product    = a * a;
-    float      length_squared = vec::length_squared(a);
+    vec3f a              = vec3f(2, 3, 4);
+    float dot_product    = a * a;
+    float length_squared = vector::length_squared(a);
 
     ASSERT_EQ(dot_product, length_squared);
 }
 TEST(Vec, DotProductUnitParallel)
 {
-    vec::vec3f a           = vec::vec3f(1, 0, 0);
-    float      dot_product = a * a;
+    vec3f a           = vec3f(1, 0, 0);
+    float dot_product = a * a;
 
     ASSERT_EQ(dot_product, 1);
 }
 TEST(Vec, DotProductUnitAntiParallel)
 {
-    vec::vec3f a           = vec::vec3f(1, 0, 0);
-    vec::vec3f b           = vec::vec3f(-1, 0, 0);
-    float      dot_product = a * b;
+    vec3f a           = vec3f(1, 0, 0);
+    vec3f b           = vec3f(-1, 0, 0);
+    float dot_product = a * b;
 
     ASSERT_EQ(dot_product, -1);
 }
 TEST(Vec, DotProductUnitPerpendicular)
 {
-    vec::vec3f a           = vec::vec3f(1, 0, 0);
-    vec::vec3f b           = vec::vec3f(0, 1, 0);
-    float      dot_product = a * b;
+    vec3f a           = vec3f(1, 0, 0);
+    vec3f b           = vec3f(0, 1, 0);
+    float dot_product = a * b;
 
     ASSERT_EQ(dot_product, 0);
 }
@@ -509,35 +510,35 @@ TEST(Vec, DotProductUnitPerpendicular)
 
 TEST(Vec, Addition)
 {
-    vec::vec3f a = vec::vec3f(1, 0, 0);
-    vec::vec3f b = vec::vec3f(0, 1, 0);
-    vec::vec3f c = a + b;
+    vec3f a = vec3f(1, 0, 0);
+    vec3f b = vec3f(0, 1, 0);
+    vec3f c = a + b;
 
-    ASSERT_EQ(c, vec::vec3f(1, 1, 0));
+    ASSERT_EQ(c, vec3f(1, 1, 0));
 }
 TEST(Vec, AdditionWithNegativeComponends)
 {
-    vec::vec3f a = vec::vec3f(-1, 0, 0);
-    vec::vec3f b = vec::vec3f(0, 1, 0);
-    vec::vec3f c = a + b;
+    vec3f a = vec3f(-1, 0, 0);
+    vec3f b = vec3f(0, 1, 0);
+    vec3f c = a + b;
 
-    ASSERT_EQ(c, vec::vec3f(-1, 1, 0));
+    ASSERT_EQ(c, vec3f(-1, 1, 0));
 }
 TEST(Vec, Subtraction)
 {
-    vec::vec3f a = vec::vec3f(1, 1, 0);
-    vec::vec3f b = vec::vec3f(0, 1, 0);
-    vec::vec3f c = a - b;
+    vec3f a = vec3f(1, 1, 0);
+    vec3f b = vec3f(0, 1, 0);
+    vec3f c = a - b;
 
-    ASSERT_EQ(c, vec::vec3f(1, 0, 0));
+    ASSERT_EQ(c, vec3f(1, 0, 0));
 }
 TEST(Vec, SubtractionWithNegativeComponends)
 {
-    vec::vec3f a = vec::vec3f(-1, -1, 0);
-    vec::vec3f b = vec::vec3f(0, 1, 0);
-    vec::vec3f c = a - b;
+    vec3f a = vec3f(-1, -1, 0);
+    vec3f b = vec3f(0, 1, 0);
+    vec3f c = a - b;
 
-    ASSERT_EQ(c, vec::vec3f(-1, -2, 0));
+    ASSERT_EQ(c, vec3f(-1, -2, 0));
 }
 
 
@@ -549,47 +550,47 @@ TEST(Vec, SubtractionWithNegativeComponends)
 
 TEST(Vec, MultiplicationAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = a * 5;
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = a * 5;
 
-    ASSERT_EQ(b, vec::vec3f(10, 15, 20));
+    ASSERT_EQ(b, vec3f(10, 15, 20));
 }
 TEST(Vec, MultiplicationZeroFactor)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = a * 0;
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = a * 0;
 
-    ASSERT_EQ(b, vec::vec3f());
+    ASSERT_EQ(b, vec3f());
 }
 TEST(Vec, MultiplicationZeroVector)
 {
-    vec::vec3f zero_vector = vec::vec3f();
-    vec::vec3f b           = zero_vector * 5;
+    vec3f zero_vector = vec3f();
+    vec3f b           = zero_vector * 5;
 
-    ASSERT_EQ(b, vec::vec3f());
+    ASSERT_EQ(b, vec3f());
 }
 
 
 TEST(Vec, DivisionAny)
 {
-    vec::vec3f a = vec::vec3f(10, 15, 20);
-    vec::vec3f b = a / 5;
+    vec3f a = vec3f(10, 15, 20);
+    vec3f b = a / 5;
 
-    ASSERT_EQ(b, vec::vec3f(2, 3, 4));
+    ASSERT_EQ(b, vec3f(2, 3, 4));
 }
 TEST(Vec, DivisionZeroFactor)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = a / 0;
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = a / 0;
 
-    ASSERT_EQ(b, vec::vec3f(std::numeric_limits<float>::infinity()));
+    ASSERT_EQ(b, vec3f(std::numeric_limits<float>::infinity()));
 }
 TEST(Vec, DivisionZeroVector)
 {
-    vec::vec3f zero_vector = vec::vec3f();
-    vec::vec3f b           = zero_vector / 5;
+    vec3f zero_vector = vec3f();
+    vec3f b           = zero_vector / 5;
 
-    ASSERT_EQ(b, vec::vec3f());
+    ASSERT_EQ(b, vec3f());
 }
 
 
@@ -607,47 +608,47 @@ TEST(Vec, DivisionZeroVector)
 
 TEST(Vec, MultiplicationAssignmentAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
     a *= 5;
 
-    ASSERT_EQ(a, vec::vec3f(10, 15, 20));
+    ASSERT_EQ(a, vec3f(10, 15, 20));
 }
 TEST(Vec, MultiplicationAssignmentZeroFactor)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
     a *= 0;
 
-    ASSERT_EQ(a, vec::vec3f());
+    ASSERT_EQ(a, vec3f());
 }
 TEST(Vec, MultiplicationAssignmentZeroVector)
 {
-    vec::vec3f zero_vector = vec::vec3f();
+    vec3f zero_vector = vec3f();
     zero_vector *= 5;
 
-    ASSERT_EQ(zero_vector, vec::vec3f());
+    ASSERT_EQ(zero_vector, vec3f());
 }
 
 
 TEST(Vec, DivisionAssignmentAny)
 {
-    vec::vec3f a = vec::vec3f(10, 15, 20);
+    vec3f a = vec3f(10, 15, 20);
     a /= 5;
 
-    ASSERT_EQ(a, vec::vec3f(2, 3, 4));
+    ASSERT_EQ(a, vec3f(2, 3, 4));
 }
 TEST(Vec, DivisionAssignmentZeroFactor)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
     a /= 0;
 
-    ASSERT_EQ(a, vec::vec3f(std::numeric_limits<float>::infinity()));
+    ASSERT_EQ(a, vec3f(std::numeric_limits<float>::infinity()));
 }
 TEST(Vec, DivisionAssignmentZeroVector)
 {
-    vec::vec3f zero_vector = vec::vec3f();
+    vec3f zero_vector = vec3f();
     zero_vector /= 5;
 
-    ASSERT_EQ(zero_vector, vec::vec3f());
+    ASSERT_EQ(zero_vector, vec3f());
 }
 
 
@@ -659,34 +660,34 @@ TEST(Vec, DivisionAssignmentZeroVector)
 
 TEST(Vec, AdditionAssignment)
 {
-    vec::vec3f a = vec::vec3f(1, 0, 0);
-    vec::vec3f b = vec::vec3f(0, 1, 0);
+    vec3f a = vec3f(1, 0, 0);
+    vec3f b = vec3f(0, 1, 0);
     a += b;
 
-    ASSERT_EQ(a, vec::vec3f(1, 1, 0));
+    ASSERT_EQ(a, vec3f(1, 1, 0));
 }
 TEST(Vec, AdditionAssignmentWithNegativeComponends)
 {
-    vec::vec3f a = vec::vec3f(-1, 0, 0);
-    vec::vec3f b = vec::vec3f(0, 1, 0);
+    vec3f a = vec3f(-1, 0, 0);
+    vec3f b = vec3f(0, 1, 0);
 
     a += b;
-    ASSERT_EQ(a, vec::vec3f(-1, 1, 0));
+    ASSERT_EQ(a, vec3f(-1, 1, 0));
 }
 TEST(Vec, SubtractionAssignment)
 {
-    vec::vec3f a = vec::vec3f(1, 1, 0);
-    vec::vec3f b = vec::vec3f(0, 1, 0);
+    vec3f a = vec3f(1, 1, 0);
+    vec3f b = vec3f(0, 1, 0);
     a -= b;
-    ASSERT_EQ(a, vec::vec3f(1, 0, 0));
+    ASSERT_EQ(a, vec3f(1, 0, 0));
 }
 TEST(Vec, SubtractionAssignmentWithNegativeComponends)
 {
-    vec::vec3f a = vec::vec3f(-1, -1, 0);
-    vec::vec3f b = vec::vec3f(0, 1, 0);
+    vec3f a = vec3f(-1, -1, 0);
+    vec3f b = vec3f(0, 1, 0);
 
     a -= b;
-    ASSERT_EQ(a, vec::vec3f(-1, -2, 0));
+    ASSERT_EQ(a, vec3f(-1, -2, 0));
 }
 
 
@@ -704,14 +705,14 @@ TEST(Vec, SubtractionAssignmentWithNegativeComponends)
 
 TEST(Vec, EqualAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
     ASSERT_EQ(a == a, true);
 }
 TEST(Vec, EqualAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
     ASSERT_EQ(a == b, false);
 }
@@ -719,14 +720,14 @@ TEST(Vec, EqualAnyNot)
 
 TEST(Vec, UnequalAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
     ASSERT_EQ(a != b, true);
 }
 TEST(Vec, UnequalAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
     ASSERT_EQ(a != a, false);
 }
@@ -734,15 +735,15 @@ TEST(Vec, UnequalAnyNot)
 
 TEST(Vec, LongerAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
     ASSERT_EQ(a > b, true);
 }
 TEST(Vec, LongerAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
     ASSERT_EQ(b > a, false);
 }
@@ -750,15 +751,15 @@ TEST(Vec, LongerAnyNot)
 
 TEST(Vec, ShorterAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
     ASSERT_EQ(b < a, true);
 }
 TEST(Vec, ShorterAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
     ASSERT_EQ(a < b, false);
 }
@@ -766,22 +767,22 @@ TEST(Vec, ShorterAnyNot)
 
 TEST(Vec, LongerOrEqualAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
     ASSERT_EQ(a >= b, true);
 }
 TEST(Vec, LongerOrEqualAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
     ASSERT_EQ(b >= a, false);
 }
 TEST(Vec, LongerOrEqualAnyEqual)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 4);
 
     ASSERT_EQ(a >= b, true);
 }
@@ -789,22 +790,22 @@ TEST(Vec, LongerOrEqualAnyEqual)
 
 TEST(Vec, ShorterOrEqualAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
     ASSERT_EQ(b <= a, true);
 }
 TEST(Vec, ShorterOrEqualAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
     ASSERT_EQ(a <= b, false);
 }
 TEST(Vec, ShorterOrEqualAnyEqual)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 4);
 
     ASSERT_EQ(b <= a, true);
 }
@@ -818,43 +819,43 @@ TEST(Vec, ShorterOrEqualAnyEqual)
 
 TEST(Vec, LengthEqualAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
-    ASSERT_EQ(a == vec::length(a), true);
+    ASSERT_EQ(a == vector::length(a), true);
 }
 TEST(Vec, LengthEqualAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
-    ASSERT_EQ(a == length(b), false);
+    ASSERT_EQ(a == vector::length(b), false);
 }
 
 
 TEST(Vec, LengthUnequalAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
-    vec::vec3f b = vec::vec3f(2, 3, 3);
+    vec3f a = vec3f(2, 3, 4);
+    vec3f b = vec3f(2, 3, 3);
 
-    ASSERT_EQ(a != length(b), true);
+    ASSERT_EQ(a != vector::length(b), true);
 }
 TEST(Vec, LengthUnequalAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
-    ASSERT_EQ(a != length(a), false);
+    ASSERT_EQ(a != vector::length(a), false);
 }
 
 
 TEST(Vec, LengthLongerAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
     ASSERT_EQ(a > 2, true);
 }
 TEST(Vec, LengthLongerAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
     ASSERT_EQ(a > 6, false);
 }
@@ -862,13 +863,13 @@ TEST(Vec, LengthLongerAnyNot)
 
 TEST(Vec, LengthShorterAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
     ASSERT_EQ(a < 6, true);
 }
 TEST(Vec, LengthShorterAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
     ASSERT_EQ(a < 5, false);
 }
@@ -876,41 +877,41 @@ TEST(Vec, LengthShorterAnyNot)
 
 TEST(Vec, LengthLongerOrEqualAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
     ASSERT_EQ(a >= 5, true);
 }
 TEST(Vec, LengthLongerOrEqualAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
     ASSERT_EQ(6 >= a, false);
 }
 TEST(Vec, LengthLongerOrEqualAnyEqual)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
-    ASSERT_EQ(a >= vec::length(a), true);
+    ASSERT_EQ(a >= vector::length(a), true);
 }
 
 
 TEST(Vec, LengthShorterOrEqualAny)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
     ASSERT_EQ(6 <= a, true);
 }
 TEST(Vec, LengthShorterOrEqualAnyNot)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
     ASSERT_EQ(a <= 4, false);
 }
 TEST(Vec, LengthShorterOrEqualAnyEqual)
 {
-    vec::vec3f a = vec::vec3f(2, 3, 4);
+    vec3f a = vec3f(2, 3, 4);
 
-    ASSERT_EQ(vec::length(a) <= a, true);
+    ASSERT_EQ(vector::length(a) <= a, true);
 }
 
 

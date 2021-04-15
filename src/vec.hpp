@@ -43,17 +43,27 @@
 
 
 // TODO: Check if these are really necessary
-namespace ggmath::vec
+namespace ggmath
 {
     template <ggmath::Scalar T, int n>
     struct vec;
-}    // namespace ggmath::vec
+    namespace vector
+    {
+        template <Scalar T_A,
+                  Scalar T_B,
+                  Scalar T_Out = decltype(std::declval<T_A>() * std::declval<T_B>())>
+        constexpr vec<T_Out, 3> cross(const vec<T_A, 3>& a, const vec<T_B, 3>& b);
+
+        template <Scalar T, int n>
+        constexpr float length(const vec<T, n>& _vec);
+    }    // namespace vector
+}    // namespace ggmath
 
 
 namespace ggmath::debug
 {
     template <ggmath::Scalar T, int n>
-    void throw_if_not_unit(const ggmath::vec::vec<T, n>& vec);
+    void throw_if_not_unit(const ggmath::vec<T, n>& vec);
 
     void throw_if_not_equal_length(int n_A, int n_B);
 }    // namespace ggmath::debug
@@ -242,12 +252,12 @@ namespace ggmath::debug
     // endregion macros
 
 
-namespace ggmath::vec
+namespace ggmath
 {
     // region classes
 
 
-    template <ggmath::Scalar T, int n>
+    template <Scalar T, int n>
     struct vec
     {
         std::array<T, n> data;
@@ -255,7 +265,7 @@ namespace ggmath::vec
     };
 
 
-    template <ggmath::Scalar T>
+    template <Scalar T>
     struct vec<T, 2>
     {
         union
@@ -282,7 +292,7 @@ namespace ggmath::vec
 
         // endregion classes::constructors
     };
-    template <ggmath::Scalar T>
+    template <Scalar T>
     struct vec<T, 3>
     {
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
@@ -311,13 +321,13 @@ namespace ggmath::vec
 
         constexpr vec(T x, T y, T z) : data{x, y, z} {}
 
-        constexpr vec(const vec<T, 2>& vec, T z) : data{vec.x, vec.y, z} {}
+        constexpr vec(const vec<T, 2>& _vec, T z) : data{_vec.x, _vec.y, z} {}
 
 
         // endregion classes::constructors
     };
     // TODO: Find out how to correctly handle fourth component
-    template <ggmath::Scalar T>
+    template <Scalar T>
     struct vec<T, 4>
     {
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
@@ -360,310 +370,26 @@ namespace ggmath::vec
     // endregion classes
 
 
-    // region named constructors
+    // region using-directives
 
 
-    template <ggmath::Scalar T, int n>
-    constexpr vec<T, n> unit_x() noexcept
-    {
-        vec vector = vec<T, n>();
-        vector[0]  = 1;
-        return vector;
-    }
+    using vec2f = vec<float, 2>;
+    using vec3f = vec<float, 3>;
+    using vec4f = vec<float, 4>;
+
+    using vec2d = vec<double, 2>;
+    using vec3d = vec<double, 3>;
+    using vec4d = vec<double, 4>;
+
+    using vec2i = vec<int, 2>;
+    using vec3i = vec<int, 3>;
+    using vec4i = vec<int, 4>;
+
+    using color3 = vec<u_int8_t, 3>;
+    using color4 = vec<u_int8_t, 4>;
 
 
-    template <ggmath::Scalar T, int n>
-    constexpr vec<T, n> unit_y() noexcept
-    {
-        vec vector = vec<T, n>();
-        vector[1]  = 1;
-        return vector;
-    }
-
-
-    template <ggmath::Scalar T, int n>
-    constexpr vec<T, n> unit_z() noexcept
-    {
-        vec vector = vec<T, n>();
-        vector[2]  = 1;
-        return vector;
-    }
-
-
-    // Allows mismatched sizes and zero-initializes missing values
-    template <ggmath::Scalar T_new, ggmath::Scalar T_Other, int n_new, int n_Other>
-    constexpr vec<T_new, n_new> from_other(const vec<T_Other, n_Other>& other) noexcept
-    {
-        vec vector = vec<T_new, n_new>();
-
-        std::ranges::copy(other, std::begin(vector));
-
-        return vector;
-    }
-
-
-    // endregion named constructors
-
-
-    // region functions
-
-
-    /**
-     * @brief Calculate the cross product(a x b) of two vectors a and b
-     */
-    template <ggmath::Scalar T_A,
-              ggmath::Scalar T_B,
-              ggmath::Scalar T_Out = decltype(std::declval<T_A>()
-                                              * std::declval<T_B>())>
-    constexpr vec<T_Out, 3> cross(const vec<T_A, 3>& a, const vec<T_B, 3>& b)
-    {
-        return vec<T_Out, 3>(a[1] * b[2] - a[2] * b[1],
-                             a[2] * b[0] - a[0] * b[2],
-                             a[0] * b[1] - a[1] * b[0]);
-    }
-
-
-    /**
-     * @brief Calculate the length of vec
-     */
-    template <ggmath::Scalar T, int n>
-    constexpr float length(const vec<T, n>& vec)
-    {
-        return abs(std::sqrt(vec * vec));
-    }
-
-
-    /**
-     * @brief Calculate the squared length of vec
-     *
-     * This function is potentially faster than squaring the length after calculating it
-     * (length(vec) * length(vec))
-     */
-    template <ggmath::Scalar T, int n>
-    constexpr float length_squared(const vec<T, n>& vec)
-    {
-        return vec * vec;
-    }
-
-
-    /**
-     * @brief Return a copy of vec scaled to a length of 1
-     */
-    template <ggmath::Scalar T_In, int n>
-    constexpr auto normalized(const vec<T_In, n>& vec)
-    {
-        return vec / length(vec);
-    }
-
-
-    /**
-     * @brief Return a copy of vec with a length of length * factor
-     */
-    template <ggmath::Scalar T_In,
-              ggmath::Scalar T_Factor,
-              ggmath::Scalar T_Out = decltype(std::declval<T_In>()
-                                              * std::declval<T_Factor>()),
-              int            n>
-    constexpr vec<T_Out, n> scaled_by(const vec<T_In, n>& vec, T_Factor factor)
-    {
-        return vec * factor;
-    }
-
-    /**
-     * @brief Return a copy of vec with a length of wanted_magnitude
-     */
-    template <ggmath::Scalar T_In,
-              ggmath::Scalar T_Magnitude,
-              ggmath::Scalar T_Out = decltype(std::declval<T_In>()
-                                              / std::declval<T_Magnitude>()),
-              int            n>
-    constexpr vec<T_Out, n> scaled_to(const vec<T_In, n>& vec,
-                                      T_Magnitude         wanted_magnitude)
-    {
-        float factor = wanted_magnitude / length(vec);
-
-        if (!std::isnormal(factor))
-        {
-            return ggmath::vec::vec<T_Out, n>();
-        }
-        return scaled_by(vec, factor);
-    }
-
-    /**
-     * @brief Return the signed distance from a to b
-     */
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    constexpr float distance(const vec<T_A, n>& a, const vec<T_B, n>& b)
-    {
-        return length((a - b));
-    }
-
-    /**
-     * @brief Check whetever or not the unit-vectors a and b are parallel (point in the
-     * same direction)
-     *
-     * If the vectors have a length other than 1, the result will be incorrect.
-     * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
-     * NOT a unit-vector.
-     */
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    constexpr bool parallel(const vec<T_A, n>& a, const vec<T_B, n>& b)
-    {
-#ifdef GGMATH_DEBUG
-        ggmath::debug::throw_if_not_unit(a);
-        ggmath::debug::throw_if_not_unit(b);
-#endif
-        return a * b == 1;
-    }
-
-    /**
-     * @brief Check whetever or not the unit-vectors a and b are anti-parallel(point in
-     * the opposite direction)
-     *
-     * If the vectors have a length other than 1, the result will be incorrect.
-     * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
-     * NOT a unit-vector.
-     */
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    constexpr bool anti_parallel(const vec<T_A, n>& a, const vec<T_B, n>& b)
-    {
-#ifdef GGMATH_DEBUG
-        ggmath::debug::throw_if_not_unit(a);
-        ggmath::debug::throw_if_not_unit(b);
-#endif
-        return a * b == -1;
-    }
-
-    /**
-     * @brief Check whetever or not the unit-vectors a and b are perpendicular(the angle
-     * between them is 90 deg)
-     *
-     * If the vectors have a length other than 1, the result will be incorrect.
-     * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
-     * NOT a unit-vector.
-     */
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    constexpr bool perpendicular(const vec<T_A, n>& a, const vec<T_B, n>& b)
-    {
-#ifdef GGMATH_DEBUG
-        ggmath::debug::throw_if_not_unit(a);
-        ggmath::debug::throw_if_not_unit(b);
-#endif
-        return ggmath::difference_within_epsilon(a * b, 0);
-    }
-
-
-    /**
-     * @brief Return the angle between the vectors
-     */
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    constexpr float angle_between(const vec<T_A, n>& a, const vec<T_B, n>& b)
-    {
-        return std::acos((a * b) / (std::abs(length(a)) * std::abs(length(b))));
-    }
-
-    /**
-     * @brief Return the angle between the unit vectors*
-     *
-     * If the vectors have a length other than 1, the result will be incorrect.
-     * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
-     * NOT a unit-vector.
-     */
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    constexpr float angle_between_unit(const vec<T_A, n>& a, const vec<T_B, n>& b)
-    {
-#ifdef GGMATH_DEBUG
-        ggmath::debug::throw_if_not_unit(a);
-        ggmath::debug::throw_if_not_unit(b);
-#endif
-        return std::acos(a * b);
-    }
-
-    /**
-     * @brief Check if the given vector has a length of 1
-     */
-    template <ggmath::Scalar T, int n>
-    constexpr bool is_unit_vector(const vec<T, n>& vec)
-    {
-        return ggmath::difference_within_epsilon(length(vec), 1);
-    }
-
-    /**
-     * @brief Return the smallest element in the vector
-     */
-    template <ggmath::Scalar T, int n>
-    constexpr T min(const vec<T, n>& vec)
-    {
-        return *std::ranges::min_element(vec);
-    }
-
-    /**
-     * @brief Return the largest element in the vector
-     */
-    template <ggmath::Scalar T, int n>
-    constexpr T max(const vec<T, n>& vec)
-    {
-        return *std::ranges::max_element(vec);
-    }
-
-    /**
-     * @brief Return the 0-based index of the smallest element in the vector
-     */
-    template <ggmath::Scalar T, int n>
-    constexpr size_t index_min(const vec<T, n>& vec)
-    {
-        return std::ranges::distance(std::begin(vec), std::ranges::min_element(vec));
-    }
-
-    /**
-     * @brief Return the 0-based index of the largest element in the vector
-     */
-    template <ggmath::Scalar T, int n>
-    constexpr size_t index_max(const vec<T, n>& vec)
-    {
-        return std::ranges::distance(
-            std::begin(vec), std::ranges::max_element(std::begin(vec), std::end(vec)));
-    }
-
-
-    /**
-     * Return a vector that is the linear interpolation from a to b with a weight of t
-     */
-    template <ggmath::Scalar T_A,
-              ggmath::Scalar T_B,
-              ggmath::Scalar T_Weight,
-              ggmath::Scalar T_Out = decltype(
-                  std::declval<T_A>() + std::declval<T_Weight>() * std::declval<T_B>()),
-              int n>
-    constexpr vec<T_Out, n> lerp(const vec<T_A, n>& a, const vec<T_B, n>& b, T_Weight t)
-    {
-        return a + t * (b - a);
-    }
-
-
-    /**
-     * Reflect the vector a about normal
-     *
-     * If the vectors have a length other than 1, the result will be incorrect.
-     * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters is
-     * NOT a unit-vector.
-     */
-    template <ggmath::Scalar T_A,
-              ggmath::Scalar T_B,
-              ggmath::Scalar T_Out = decltype(std::declval<T_A>()
-                                              * std::declval<T_B>()),
-              int            n>
-    constexpr vec<T_Out, n> reflect(const vec<T_A, n>& a, const vec<T_B, n>& normal)
-    {
-#ifdef GGMATH_DEBUG
-        ggmath::debug::throw_if_not_unit(a);
-        ggmath::debug::throw_if_not_unit(normal);
-#endif
-        return a - 2 * (a * normal) * normal;
-    }
-
-
-    // endregion functions
+    // endregion using-directives
 
 
     // region operator_overloads
@@ -676,7 +402,7 @@ namespace ggmath::vec
 
 
     // Dot product
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
+    template <Scalar T_A, Scalar T_B, int n>
     constexpr float operator*(const vec<T_A, n>& a, const vec<T_B, n>& b)
     {
         return std::inner_product(std::begin(a), std::end(a), std::begin(b), 0.0);
@@ -684,23 +410,21 @@ namespace ggmath::vec
 
 
     // Cross product
-    template <ggmath::Scalar T_A,
-              ggmath::Scalar T_B,
-              ggmath::Scalar T_Out = decltype(std::declval<T_A>()
-                                              * std::declval<T_B>()),
-              int            n>
+    template <Scalar T_A,
+              Scalar T_B,
+              Scalar T_Out = decltype(std::declval<T_A>() * std::declval<T_B>()),
+              int    n>
     constexpr vec<T_Out, n> operator%(const vec<T_A, n>& a, const vec<T_B, n>& b)
     {
-        return cross(a, b);
+        return ggmath::vector::cross(a, b);
     }
 
 
     // Vector-vector  addition
-    template <ggmath::Scalar T_A,
-              ggmath::Scalar T_B,
-              ggmath::Scalar T_Out = decltype(std::declval<T_A>()
-                                              + std::declval<T_B>()),
-              int            n>
+    template <Scalar T_A,
+              Scalar T_B,
+              Scalar T_Out = decltype(std::declval<T_A>() + std::declval<T_B>()),
+              int    n>
     constexpr vec<T_Out, n> operator+(const vec<T_A, n>& a, const vec<T_B, n>& b)
     {
         auto vec_out = vec<T_Out, n>();
@@ -712,11 +436,10 @@ namespace ggmath::vec
 
 
     // Vector-vector subtraction
-    template <ggmath::Scalar T_A,
-              ggmath::Scalar T_B,
-              ggmath::Scalar T_Out = decltype(std::declval<T_A>()
-                                              - std::declval<T_B>()),
-              int            n>
+    template <Scalar T_A,
+              Scalar T_B,
+              Scalar T_Out = decltype(std::declval<T_A>() - std::declval<T_B>()),
+              int    n>
     constexpr vec<T_Out, n> operator-(const vec<T_A, n>& a, const vec<T_B, n>& b)
     {
         auto vec_out = vec<T_Out, n>();
@@ -734,11 +457,10 @@ namespace ggmath::vec
 
 
     // Scalar-vector multiplication
-    template <ggmath::Scalar T_Scalar,
-              ggmath::Scalar T_Vec,
-              ggmath::Scalar T_Out = decltype(std::declval<T_Scalar>()
-                                              + std::declval<T_Vec>()),
-              int            n>
+    template <Scalar T_Scalar,
+              Scalar T_Vec,
+              Scalar T_Out = decltype(std::declval<T_Scalar>() + std::declval<T_Vec>()),
+              int    n>
     constexpr vec<T_Out, n> operator*(const T_Scalar scalar, const vec<T_Vec, n>& _vec)
     {
         auto vec_out = vec<T_Out, n>();
@@ -752,28 +474,26 @@ namespace ggmath::vec
 
 
     // Scalar-vector multiplication
-    template <ggmath::Scalar T_Scalar,
-              ggmath::Scalar T_Vec,
-              ggmath::Scalar T_Out = decltype(std::declval<T_Vec>()
-                                              * std::declval<T_Scalar>()),
-              int            n>
-    constexpr vec<T_Out, n> operator*(const vec<T_Vec, n>& vec, const T_Scalar scalar)
+    template <Scalar T_Scalar,
+              Scalar T_Vec,
+              Scalar T_Out = decltype(std::declval<T_Vec>() * std::declval<T_Scalar>()),
+              int    n>
+    constexpr vec<T_Out, n> operator*(const vec<T_Vec, n>& _vec, const T_Scalar scalar)
     {
-        return scalar * vec;
+        return scalar * _vec;
     }
 
 
     // Scalar-vector division
-    template <ggmath::Scalar T_Scalar,
-              ggmath::Scalar T_Vec,
-              ggmath::Scalar T_Out = decltype(std::declval<T_Vec>()
-                                              / std::declval<T_Scalar>()),
-              int            n>
-    constexpr vec<T_Out, n> operator/(const vec<T_Vec, n>& vec, const T_Scalar scalar)
+    template <Scalar T_Scalar,
+              Scalar T_Vec,
+              Scalar T_Out = decltype(std::declval<T_Vec>() / std::declval<T_Scalar>()),
+              int    n>
+    constexpr vec<T_Out, n> operator/(const vec<T_Vec, n>& _vec, const T_Scalar scalar)
     {
-        auto vec_out = ggmath::vec::vec<T_Out, n>();
+        auto vec_out = vec<T_Out, n>();
 
-        std::ranges::transform(vec, std::begin(vec_out), [scalar](T_Vec element) {
+        std::ranges::transform(_vec, std::begin(vec_out), [scalar](T_Vec element) {
             return element / scalar;
         });
 
@@ -794,21 +514,23 @@ namespace ggmath::vec
 
 
     // Scalar-vector multiplication assignment
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    constexpr vec<T_Vec, n>& operator*=(vec<T_Vec, n>& vec, const T_Scalar scalar)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    constexpr vec<T_Vec, n>& operator*=(vec<T_Vec, n>& _vec, const T_Scalar scalar)
     {
-        std::ranges::transform(
-            vec, std::begin(vec), [scalar](T_Vec element) { return element * scalar; });
-        return vec;
+        std::ranges::transform(_vec, std::begin(_vec), [scalar](T_Vec element) {
+            return element * scalar;
+        });
+        return _vec;
     }
 
     // Scalar-vector division assignment
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    constexpr vec<T_Vec, n>& operator/=(vec<T_Vec, n>& vec, const T_Scalar scalar)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    constexpr vec<T_Vec, n>& operator/=(vec<T_Vec, n>& _vec, const T_Scalar scalar)
     {
-        std::ranges::transform(
-            vec, std::begin(vec), [scalar](T_Vec element) { return element / scalar; });
-        return vec;
+        std::ranges::transform(_vec, std::begin(_vec), [scalar](T_Vec element) {
+            return element / scalar;
+        });
+        return _vec;
     }
 
 
@@ -819,7 +541,7 @@ namespace ggmath::vec
 
 
     // Vector-vector addition-assignment
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
+    template <Scalar T_A, Scalar T_B, int n>
     constexpr vec<T_A, n>& operator+=(vec<T_A, n>& a, const vec<T_B, n>& b)
     {
         std::ranges::transform(a, b, std::begin(a), std::plus<>());
@@ -829,7 +551,7 @@ namespace ggmath::vec
 
 
     // Vector-vector subtraction-assignment
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
+    template <Scalar T_A, Scalar T_B, int n>
     constexpr vec<T_A, n>& operator-=(vec<T_A, n>& a, const vec<T_B, n>& b)
     {
         std::ranges::transform(a, b, std::begin(a), std::minus<>());
@@ -851,56 +573,56 @@ namespace ggmath::vec
 
 
     // Compare component-wise equality
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    requires std::equality_comparable_with<T_A, T_B> constexpr bool operator==(
-        const vec<T_A, n>& a, const vec<T_B, n>& b)
+    template <Scalar T_A, Scalar T_B, int n>
+    requires std::equality_comparable_with<T_A, T_B>
+    constexpr bool operator==(const vec<T_A, n>& a, const vec<T_B, n>& b)
     {
         return std::ranges::equal(a, b);
     }
 
 
     // Compare component-wise equality
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    requires std::equality_comparable_with<T_A, T_B> constexpr bool operator!=(
-        const vec<T_A, n>& a, const vec<T_B, n>& b)
+    template <Scalar T_A, Scalar T_B, int n>
+    requires std::equality_comparable_with<T_A, T_B>
+    constexpr bool operator!=(const vec<T_A, n>& a, const vec<T_B, n>& b)
     {
         return !std::ranges::equal(a, b);
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    requires std::totally_ordered_with<T_A, T_B> constexpr bool operator>(
-        const vec<T_A, n>& a, const vec<T_B, n>& b)
+    template <Scalar T_A, Scalar T_B, int n>
+    requires std::totally_ordered_with<T_A, T_B>
+    constexpr bool operator>(const vec<T_A, n>& a, const vec<T_B, n>& b)
     {
-        return length(a) > length(b);
+        return ggmath::vector::length(a) > ggmath::vector::length(b);
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    requires std::totally_ordered_with<T_A, T_B> constexpr bool operator<(
-        const vec<T_A, n>& a, const vec<T_B, n>& b)
+    template <Scalar T_A, Scalar T_B, int n>
+    requires std::totally_ordered_with<T_A, T_B>
+    constexpr bool operator<(const vec<T_A, n>& a, const vec<T_B, n>& b)
     {
-        return length(a) < length(b);
+        return ggmath::vector::length(a) < ggmath::vector::length(b);
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    requires std::totally_ordered_with<T_A, T_B> constexpr bool operator>=(
-        const vec<T_A, n>& a, const vec<T_B, n>& b)
+    template <Scalar T_A, Scalar T_B, int n>
+    requires std::totally_ordered_with<T_A, T_B>
+    constexpr bool operator>=(const vec<T_A, n>& a, const vec<T_B, n>& b)
     {
-        return length(a) >= length(b);
+        return ggmath::vector::length(a) >= ggmath::vector::length(b);
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_A, ggmath::Scalar T_B, int n>
-    requires std::totally_ordered_with<T_A, T_B> constexpr bool operator<=(
-        const vec<T_A, n>& a, const vec<T_B, n>& b)
+    template <Scalar T_A, Scalar T_B, int n>
+    requires std::totally_ordered_with<T_A, T_B>
+    constexpr bool operator<=(const vec<T_A, n>& a, const vec<T_B, n>& b)
     {
-        return length(a) <= length(b);
+        return ggmath::vector::length(a) <= ggmath::vector::length(b);
     }
 
 
@@ -911,108 +633,108 @@ namespace ggmath::vec
 
 
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator==(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::equality_comparable_with<T_Vec, T_Scalar>
+    constexpr bool operator==(const vec<T_Vec, n>& _vec, T_Scalar scalar)
     {
-        return difference_within_epsilon(length(vec), scalar);
+        return difference_within_epsilon(ggmath::vector::length(_vec), scalar);
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator==(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::equality_comparable_with<T_Vec, T_Scalar>
+    constexpr bool operator==(T_Scalar scalar, const vec<T_Vec, n>& _vec)
     {
-        return vec == scalar;
+        return _vec == scalar;
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator!=(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::equality_comparable_with<T_Vec, T_Scalar>
+    constexpr bool operator!=(const vec<T_Vec, n>& _vec, T_Scalar scalar)
     {
-        return length(vec) != scalar;
+        return ggmath::vector::length(_vec) != scalar;
     }
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::equality_comparable_with<T_Vec, T_Scalar> constexpr bool operator!=(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::equality_comparable_with<T_Vec, T_Scalar>
+    constexpr bool operator!=(T_Scalar scalar, const vec<T_Vec, n>& _vec)
     {
-        return vec != scalar;
-    }
-
-
-    // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator>(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
-    {
-        return length(vec) > scalar;
+        return _vec != scalar;
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator>(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator>(const vec<T_Vec, n>& _vec, T_Scalar scalar)
     {
-        return vec > scalar;
+        return ggmath::vector::length(_vec) > scalar;
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator<(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator>(T_Scalar scalar, const vec<T_Vec, n>& _vec)
     {
-        return length(vec) < scalar;
+        return _vec > scalar;
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator<(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator<(const vec<T_Vec, n>& _vec, T_Scalar scalar)
     {
-        return vec < scalar;
+        return ggmath::vector::length(_vec) < scalar;
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator>=(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator<(T_Scalar scalar, const vec<T_Vec, n>& _vec)
     {
-        return length(vec) >= scalar;
+        return _vec < scalar;
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator>=(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator>=(const vec<T_Vec, n>& _vec, T_Scalar scalar)
     {
-        return vec >= scalar;
+        return ggmath::vector::length(_vec) >= scalar;
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator<=(
-        const vec<T_Vec, n>& vec, T_Scalar scalar)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator>=(T_Scalar scalar, const vec<T_Vec, n>& _vec)
     {
-        return length(vec) <= scalar;
+        return _vec >= scalar;
     }
 
 
     // Compare length
-    template <ggmath::Scalar T_Vec, ggmath::Scalar T_Scalar, int n>
-    requires std::totally_ordered_with<T_Vec, T_Scalar> constexpr bool operator<=(
-        T_Scalar scalar, const vec<T_Vec, n>& vec)
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator<=(const vec<T_Vec, n>& _vec, T_Scalar scalar)
     {
-        return vec <= scalar;
+        return ggmath::vector::length(_vec) <= scalar;
+    }
+
+
+    // Compare length
+    template <Scalar T_Vec, Scalar T_Scalar, int n>
+    requires std::totally_ordered_with<T_Vec, T_Scalar>
+    constexpr bool operator<=(T_Scalar scalar, const vec<T_Vec, n>& _vec)
+    {
+        return _vec <= scalar;
     }
 
 
@@ -1026,41 +748,41 @@ namespace ggmath::vec
 
 
     // Invert vector
-    template <ggmath::Scalar T, int n>
-    constexpr vec<T, n> operator-(vec<T, n> vec)
+    template <Scalar T, int n>
+    constexpr vec<T, n> operator-(vec<T, n> _vec)
     {
         std::ranges::transform(
-            std::begin(vec), std::end(vec), std::begin(vec), std::negate<>());
-        return vec;
+            std::begin(_vec), std::end(_vec), std::begin(_vec), std::negate<>());
+        return _vec;
     }
 
 
     // Format: (data[0],data[2],...,data[n])
-    template <ggmath::NonCharacter T, int n>
-    constexpr std::ostream& operator<<(std::ostream& os, const vec<T, n>& vec)
+    template <NonCharacter T, int n>
+    constexpr std::ostream& operator<<(std::ostream& os, const vec<T, n>& _vec)
     {
-        const auto last = std::end(vec) - 1;
+        const auto last = std::end(_vec) - 1;
 
         os << '(';
         // Loop ends before last
         std::for_each(
-            std::begin(vec), last, [&os](T element) { os << element << ','; });
+            std::begin(_vec), last, [&os](T element) { os << element << ','; });
         os << *last;
         os << ')';
 
         return os;
     }
 
-    template <ggmath::Character T, int n>
-    constexpr std::ostream& operator<<(std::ostream& os, const vec<T, n>& vec)
+    template <Character T, int n>
+    constexpr std::ostream& operator<<(std::ostream& os, const vec<T, n>& _vec)
     {
-        const auto last = std::end(vec) - 1;
+        const auto last = std::end(_vec) - 1;
 
         os << '(';
         // Loop ends before last
         // unary + prints chars as numbers
         std::for_each(
-            std::begin(vec), last, [&os](T element) { os << +element << ','; });
+            std::begin(_vec), last, [&os](T element) { os << +element << ','; });
         os << +*last;
         os << ')';
 
@@ -1074,21 +796,319 @@ namespace ggmath::vec
     // endregion operator_overloads
 
 
-    using vec2f = vec<float, 2>;
-    using vec3f = vec<float, 3>;
-    using vec4f = vec<float, 4>;
+    namespace vector
+    {
+        // region named constructors
 
-    using vec2d = vec<double, 2>;
-    using vec3d = vec<double, 3>;
-    using vec4d = vec<double, 4>;
 
-    using vec2i = vec<int, 2>;
-    using vec3i = vec<int, 3>;
-    using vec4i = vec<int, 4>;
+        template <Scalar T, int n>
+        constexpr vec<T, n> unit_x() noexcept
+        {
+            vec vector = vec<T, n>();
+            vector[0]  = 1;
+            return vector;
+        }
 
-    using color3 = vec<u_int8_t, 3>;
-    using color4 = vec<u_int8_t, 4>;
-};    // namespace ggmath::vec
+
+        template <Scalar T, int n>
+        constexpr vec<T, n> unit_y() noexcept
+        {
+            vec vector = vec<T, n>();
+            vector[1]  = 1;
+            return vector;
+        }
+
+
+        template <Scalar T, int n>
+        constexpr vec<T, n> unit_z() noexcept
+        {
+            vec vector = vec<T, n>();
+            vector[2]  = 1;
+            return vector;
+        }
+
+
+        // Allows mismatched sizes and zero-initializes missing values
+        template <Scalar T_new, Scalar T_Other, int n_new, int n_Other>
+        constexpr vec<T_new, n_new> from_other(
+            const vec<T_Other, n_Other>& other) noexcept
+        {
+            vec vector = vec<T_new, n_new>();
+
+            std::ranges::copy(other, std::begin(vector));
+
+            return vector;
+        }
+
+
+        // endregion named constructors
+
+
+        // region functions
+
+
+        /**
+         * @brief Calculate the cross product(a x b) of two vectors a and b
+         */
+        template <Scalar T_A, Scalar T_B, Scalar T_Out>
+        constexpr vec<T_Out, 3> cross(const vec<T_A, 3>& a, const vec<T_B, 3>& b)
+        {
+            return vec<T_Out, 3>(a[1] * b[2] - a[2] * b[1],
+                                 a[2] * b[0] - a[0] * b[2],
+                                 a[0] * b[1] - a[1] * b[0]);
+        }
+
+
+        /**
+         * @brief Calculate the length of vec
+         */
+        template <Scalar T, int n>
+        constexpr float length(const vec<T, n>& _vec)
+        {
+            return abs(std::sqrt(_vec * _vec));
+        }
+
+
+        /**
+         * @brief Calculate the squared length of vec
+         *
+         * This function is potentially faster than squaring the length after
+         * calculating it (length(vec) * length(vec))
+         */
+        template <Scalar T, int n>
+        constexpr float length_squared(const vec<T, n>& _vec)
+        {
+            return _vec * _vec;
+        }
+
+
+        /**
+         * @brief Return a copy of vec scaled to a length of 1
+         */
+        template <Scalar T_In, int n>
+        constexpr auto normalized(const vec<T_In, n>& _vec)
+        {
+            return _vec / length(_vec);
+        }
+
+
+        /**
+         * @brief Return a copy of vec with a length of length * factor
+         */
+        template <Scalar T_In,
+                  Scalar T_Factor,
+                  Scalar T_Out = decltype(std::declval<T_In>()
+                                          * std::declval<T_Factor>()),
+                  int    n>
+        constexpr vec<T_Out, n> scaled_by(const vec<T_In, n>& _vec, T_Factor factor)
+        {
+            return _vec * factor;
+        }
+
+        /**
+         * @brief Return a copy of vec with a length of wanted_magnitude
+         */
+        template <Scalar T_In,
+                  Scalar T_Magnitude,
+                  Scalar T_Out = decltype(std::declval<T_In>()
+                                          / std::declval<T_Magnitude>()),
+                  int    n>
+        constexpr vec<T_Out, n> scaled_to(const vec<T_In, n>& _vec,
+                                          T_Magnitude         wanted_magnitude)
+        {
+            float factor = wanted_magnitude / length(_vec);
+
+            if (!std::isnormal(factor))
+            {
+                return vec<T_Out, n>();
+            }
+            return scaled_by(_vec, factor);
+        }
+
+        /**
+         * @brief Return the signed distance from a to b
+         */
+        template <Scalar T_A, Scalar T_B, int n>
+        constexpr float distance(const vec<T_A, n>& a, const vec<T_B, n>& b)
+        {
+            return length((a - b));
+        }
+
+        /**
+         * @brief Check whetever or not the unit-vectors a and b are parallel (point in
+         * the same direction)
+         *
+         * If the vectors have a length other than 1, the result will be incorrect.
+         * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters
+         * is NOT a unit-vector.
+         */
+        template <Scalar T_A, Scalar T_B, int n>
+        constexpr bool parallel(const vec<T_A, n>& a, const vec<T_B, n>& b)
+        {
+#ifdef GGMATH_DEBUG
+            debug::throw_if_not_unit(a);
+            debug::throw_if_not_unit(b);
+#endif
+            return a * b == 1;
+        }
+
+        /**
+         * @brief Check whetever or not the unit-vectors a and b are anti-parallel(point
+         * in the opposite direction)
+         *
+         * If the vectors have a length other than 1, the result will be incorrect.
+         * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters
+         * is NOT a unit-vector.
+         */
+        template <Scalar T_A, Scalar T_B, int n>
+        constexpr bool anti_parallel(const vec<T_A, n>& a, const vec<T_B, n>& b)
+        {
+#ifdef GGMATH_DEBUG
+            debug::throw_if_not_unit(a);
+            debug::throw_if_not_unit(b);
+#endif
+            return a * b == -1;
+        }
+
+        /**
+         * @brief Check whetever or not the unit-vectors a and b are perpendicular(the
+         * angle between them is 90 deg)
+         *
+         * If the vectors have a length other than 1, the result will be incorrect.
+         * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters
+         * is NOT a unit-vector.
+         */
+        template <Scalar T_A, Scalar T_B, int n>
+        constexpr bool perpendicular(const vec<T_A, n>& a, const vec<T_B, n>& b)
+        {
+#ifdef GGMATH_DEBUG
+            debug::throw_if_not_unit(a);
+            debug::throw_if_not_unit(b);
+#endif
+            return difference_within_epsilon(a * b, 0);
+        }
+
+
+        /**
+         * @brief Return the angle between the vectors
+         */
+        template <Scalar T_A, Scalar T_B, int n>
+        constexpr float angle_between(const vec<T_A, n>& a, const vec<T_B, n>& b)
+        {
+            return std::acos((a * b) / (std::abs(length(a)) * std::abs(length(b))));
+        }
+
+        /**
+         * @brief Return the angle between the unit vectors*
+         *
+         * If the vectors have a length other than 1, the result will be incorrect.
+         * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters
+         * is NOT a unit-vector.
+         */
+        template <Scalar T_A, Scalar T_B, int n>
+        constexpr float angle_between_unit(const vec<T_A, n>& a, const vec<T_B, n>& b)
+        {
+#ifdef GGMATH_DEBUG
+            debug::throw_if_not_unit(a);
+            debug::throw_if_not_unit(b);
+#endif
+            return std::acos(a * b);
+        }
+
+        /**
+         * @brief Check if the given vector has a length of 1
+         */
+        template <Scalar T, int n>
+        constexpr bool is_unit_vector(const vec<T, n>& _vec)
+        {
+            return difference_within_epsilon(length(_vec), 1);
+        }
+
+        /**
+         * @brief Return the smallest element in the vector
+         */
+        template <Scalar T, int n>
+        constexpr T min(const vec<T, n>& _vec)
+        {
+            return *std::ranges::min_element(_vec);
+        }
+
+        /**
+         * @brief Return the largest element in the vector
+         */
+        template <Scalar T, int n>
+        constexpr T max(const vec<T, n>& _vec)
+        {
+            return *std::ranges::max_element(_vec);
+        }
+
+        /**
+         * @brief Return the 0-based index of the smallest element in the vector
+         */
+        template <Scalar T, int n>
+        constexpr size_t index_min(const vec<T, n>& _vec)
+        {
+            return std::ranges::distance(std::begin(_vec),
+                                         std::ranges::min_element(_vec));
+        }
+
+        /**
+         * @brief Return the 0-based index of the largest element in the vector
+         */
+        template <Scalar T, int n>
+        constexpr size_t index_max(const vec<T, n>& _vec)
+        {
+            return std::ranges::distance(
+                std::begin(_vec),
+                std::ranges::max_element(std::begin(_vec), std::end(_vec)));
+        }
+
+
+        /**
+         * Return a vector that is the linear interpolation from a to b with a weight of
+         * t
+         */
+        template <Scalar T_A,
+                  Scalar T_B,
+                  Scalar T_Weight,
+                  Scalar T_Out = decltype(std::declval<T_A>()
+                                          + std::declval<T_Weight>()
+                                                * std::declval<T_B>()),
+                  int    n>
+        constexpr vec<T_Out, n> lerp(const vec<T_A, n>& a,
+                                     const vec<T_B, n>& b,
+                                     T_Weight           t)
+        {
+            return a + t * (b - a);
+        }
+
+
+        /**
+         * Reflect the vector a about normal
+         *
+         * If the vectors have a length other than 1, the result will be incorrect.
+         * Define the macro GGMATH_DEBUG to throw an exception if one of the parameters
+         * is NOT a unit-vector.
+         */
+        template <Scalar T_A,
+                  Scalar T_B,
+                  Scalar T_Out = decltype(std::declval<T_A>() * std::declval<T_B>()),
+                  int    n>
+        constexpr vec<T_Out, n> reflect(const vec<T_A, n>& a, const vec<T_B, n>& normal)
+        {
+#ifdef GGMATH_DEBUG
+            debug::throw_if_not_unit(a);
+            debug::throw_if_not_unit(normal);
+#endif
+            return a - 2 * (a * normal) * normal;
+        }
+
+
+        // endregion functions
+
+
+    };    // namespace vector
+};        // namespace ggmath
 
 
 namespace ggmath::debug
@@ -1097,17 +1117,17 @@ namespace ggmath::debug
      * @brief Throw an invalid_argument exception if vec has a length other than 1
      */
     template <ggmath::Scalar T, int n>
-    void throw_if_not_unit(const ggmath::vec::vec<T, n>& vec)
+    void throw_if_not_unit(const ggmath::vec<T, n>& _vec)
     {
         // TODO: Probably better to solve with with std::format
-        if (!ggmath::vec::is_unit_vector(vec))
+        if (!ggmath::vector::is_unit_vector(_vec))
         {
             std::stringstream ss;
 
             ss << "Parameter was expected to be a unit vector"
                   "(A vector with a length of 1). "
                   "Instead, it had a length of "
-               << ggmath::vec::length(vec);
+               << ggmath::vector::length(_vec);
 
             throw std::invalid_argument(ss.str());
         }
