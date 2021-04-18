@@ -51,7 +51,6 @@ namespace ggmath
     }
 
 
-    // TODO: How about a version supporting parameter packs?
     /**
      * @brief Check if the absolute difference between the given values is less than
      * epsilon
@@ -66,6 +65,20 @@ namespace ggmath
                    typename std::conditional<ggmath::any_of_type<float, T, U>,
                                              float,
                                              double>::type>::epsilon();
+    }
+
+
+    /**
+     * @brief Check if the absolute difference between the given values is less than
+     * a specified epsilon
+     *
+     * At least one of a and b must be a floating point value.
+     */
+    template <ggmath::Scalar T, ggmath::Scalar U, std::floating_point T_Epsilon>
+    requires ggmath::any_of_concept<std::is_floating_point, T, U>
+    constexpr bool difference_within_epsilon(T a, U b, T_Epsilon epsilon)
+    {
+        return std::abs(a - b) < epsilon;
     }
 }    // namespace ggmath
 #endif    // GG_MATH_UTIL_HPP
