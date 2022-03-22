@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pocc/pre-commit-hooks
-    rev: python
+    rev: v1.3.5
     hooks:
       - id: clang-format
         args: [ --sort-includes, --style=file ]
@@ -9,7 +9,7 @@ repos:
       #   args: [ -enable-global-analysis ]
 
   - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
-    rev: v4.1.0
+    rev: v8.0.0
     hooks:
       - id: commitlint
         stages: [ commit-msg ]

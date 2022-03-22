@@ -47,6 +47,6 @@ This project and it's development use:
 
 ## License
 
-Copyright (C) 2021 [Jonas Muehlmann](https://github.com/JonasMuehlmann)
+Copyright (C) 2021-2022 [Jonas Muehlmann](https://github.com/JonasMuehlmann)
 
 The project is licensed under the terms of the MIT license, you can view it [here](LICENSE.md).
