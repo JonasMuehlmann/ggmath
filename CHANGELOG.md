@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/JonasMuehlmann/ggmath/compare/v2.4.0...v2.5.0) (2021-04-15)
+
+
+### Features
+
+* **vec:** add additional using-directives for double and int vector ([e119961](https://github.com/JonasMuehlmann/ggmath/commit/e11996184b7fadbbebc6336f2a15851d657cead9))
+
 # [2.4.0](https://github.com/JonasMuehlmann/ggmath/compare/v2.3.0...v2.4.0) (2021-04-14)
 
 
